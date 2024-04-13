@@ -7,10 +7,9 @@ public enum TipoCita {
     URGENCIA(Prioridad.ALTA);
 
 
-
     private final Prioridad prioridad;
 
-    TipoCita(Prioridad prioridad){
+    TipoCita(Prioridad prioridad) {
         this.prioridad = prioridad;
     }
 
