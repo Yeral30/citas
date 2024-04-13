@@ -1,0 +1,25 @@
+.button{
+    -fx-background-radius: 10;
+    -fx-border-radius: 10
+}
+#paneOpciones{
+
+}
+#panePrincipal{
+    -fx-background-color: white; /* Color de fondo del Pane */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 20, 0, 0, 0); /* Efecto de sombra */
+
+}
+.button{
+        -fx-font-size: 14px; /* Tamaño de fuente predeterminado */
+        -fx-cursor: hand; /* Cambiar el cursor del ratón */
+         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0); /* Efecto de sombra */
+-fx-border-color: #e1e6ff;
+}
+.button:hover{
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.20), 30, 0, 0, 0); /* Efecto de sombra */
+    -fx-scale-x: 1.1; /* Agranda el botón horizontalmente */
+    -fx-scale-y: 1.1; /* Agranda el botón verticalmente */
+
+
+}

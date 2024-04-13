@@ -14,62 +14,78 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="569.0" prefWidth="734.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.citas.controllersView.HelloController">
    <children>
-      <TabPane layoutX="-3.0" prefHeight="569.0" prefWidth="737.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabPane" layoutX="-3.0" prefHeight="569.0" prefWidth="737.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Inicio">
+          <Tab text="Inicio" fx:id="tapInicio">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="540.0" prefWidth="728.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="538.0" prefWidth="727.0" stylesheets="@Style/Style.css">
                      <children>
-                        <ImageView fitHeight="368.0" fitWidth="230.0" layoutX="514.0" layoutY="85.0" opacity="0.28" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@imagenes/color_solido.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="370.0" fitWidth="556.0" layoutY="85.0" nodeOrientation="RIGHT_TO_LEFT" opacity="0.68" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@imagenes/imagenTareaCitas.jpeg" />
-                           </image>
-                        </ImageView>
-                        <Label layoutX="412.0" layoutY="27.0" prefHeight="30.0" prefWidth="311.0" text="Agendamiento de citas medicas" textFill="#2831ab">
+                        <Label layoutX="317.0" layoutY="29.0" prefHeight="39.0" prefWidth="409.0" text="Agendamiento de citas medicas" textFill="#2831ab">
                            <font>
-                              <Font name="System Bold" size="20.0" />
+                              <Font name="System Bold" size="27.0" />
                            </font>
                         </Label>
-                        <Pane layoutX="33.0" layoutY="6.0" prefHeight="84.0" prefWidth="214.0">
+                        <Pane prefHeight="84.0" prefWidth="206.0">
                            <children>
                               <Label layoutX="19.0" layoutY="14.0" text="Nue" textFill="#39b7dd">
                                  <font>
-                                    <Font name="System Bold" size="23.0" />
+                                    <Font name="System Bold" size="27.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="64.0" layoutY="14.0" text="v" textFill="#eb2929">
+                              <Label layoutX="71.0" layoutY="13.0" text="v" textFill="#eb2929">
                                  <font>
-                                    <Font name="System Bold" size="23.0" />
+                                    <Font name="System Bold" size="28.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="75.0" layoutY="14.0" text="o" textFill="#39b7dd">
+                              <Label layoutX="86.0" layoutY="13.0" text="o" textFill="#39b7dd">
                                  <font>
-                                    <Font name="System Bold" size="23.0" />
+                                    <Font name="System Bold" size="28.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="70.0" layoutY="42.0" text="eps" textFill="#39b7dd">
+                              <Label layoutX="82.0" layoutY="38.0" text="eps" textFill="#39b7dd">
                                  <font>
-                                    <Font name="System Bold" size="15.0" />
+                                    <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
                            </children>
                         </Pane>
-                        <Button fx:id="btnSolicitarCita" layoutX="33.0" layoutY="402.0" mnemonicParsing="false" onAction="#dirigirseSolicitarCita" prefHeight="25.0" prefWidth="190.0" text="Solicitar cita ➔" />
-                        <Button fx:id="btnCancelarOModificar" layoutX="274.0" layoutY="402.0" mnemonicParsing="false" onAction="#dirigirseCancelarOModificar" prefHeight="25.0" prefWidth="190.0" text="cancelar o modificar ➔" />
-                        <Button fx:id="btnConsultarCita" layoutX="521.0" layoutY="402.0" mnemonicParsing="false" onAction="#dirigirseConsultarCita" prefHeight="25.0" prefWidth="190.0" text="Consultar cita ➔" />
-                        <Label layoutX="554.0" layoutY="170.0" prefHeight="90.0" prefWidth="121.0" />
+                        <Pane fx:id="paneOpciones" layoutX="2.0" layoutY="444.0" prefHeight="94.0" prefWidth="734.0">
+                           <children>
+                              <Button fx:id="btnSolicitarCita" layoutX="261.0" layoutY="24.0" mnemonicParsing="false" onAction="#dirigirseSolicitarCita" prefHeight="41.0" prefWidth="212.0" text="Solicitar cita ➔" />
+                              <Button fx:id="btnCancelarOModificar" layoutX="508.0" layoutY="24.0" mnemonicParsing="false" onAction="#dirigirseCancelarOModificar" prefHeight="41.0" prefWidth="212.0" text="cancelar o modificar ➔" textFill="#000b6b" />
+                              <Button fx:id="btnConsultarCita" layoutX="14.0" layoutY="24.0" mnemonicParsing="false" onAction="#dirigirseConsultarCita" prefHeight="41.0" prefWidth="212.0" text="Consultar cita ➔" />
+                           </children></Pane>
+                        <Pane fx:id="panePrincipal" layoutX="2.0" layoutY="84.0" prefHeight="354.0" prefWidth="734.0">
+                           <children>
+                              <ImageView fitHeight="356.0" fitWidth="533.0" layoutX="-6.0" nodeOrientation="RIGHT_TO_LEFT" opacity="0.68" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@imagenes/imagenTareaCitas.jpeg" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="354.0" fitWidth="231.0" layoutX="528.0" layoutY="1.0" opacity="0.28" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@imagenes/color_solido.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="lbtextoBienvenida" alignment="CENTER" layoutX="550.0" layoutY="69.0" prefHeight="196.0" prefWidth="170.0" text="Aqui podras consultar o modificar tu cita para realizar tramites en las oficinas de atencion al afiliado" textFill="#000b6b" wrapText="true">
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                              </Label>
+                              <Label contentDisplay="CENTER" layoutX="534.0" layoutY="22.0" prefHeight="35.0" prefWidth="171.0" text="Bienvenido" textAlignment="CENTER" textFill="#2831ab">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="solicitar cita">
+          <Tab text="solicitar cita" fx:id="tapSolicitarCita">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="538.0" prefWidth="656.0">
                      <children>
                         <Label layoutX="412.0" layoutY="14.0" prefHeight="30.0" prefWidth="311.0" text="Agendamiento de citas medicas" textFill="#2831ab">
                            <font>
@@ -107,12 +123,12 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Cancelar o modificar">
+            <Tab fx:id="tapCancelarModificar" text="Cancelar o modificar">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
             </Tab>
-            <Tab text="Consultar cita">
+            <Tab fx:id="tapConsultar" text="Consultar cita">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
