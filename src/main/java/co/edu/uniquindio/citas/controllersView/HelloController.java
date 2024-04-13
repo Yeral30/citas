@@ -1,19 +1,21 @@
 package co.edu.uniquindio.citas.controllersView;
 
+import co.edu.uniquindio.citas.Citas;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class HelloController implements Initializable {
+
+    @FXML
+    private ChoiceBox<?> boxTipoCita;
 
     @FXML
     private Button btnCancelarOModificar;
@@ -25,33 +27,51 @@ public class HelloController implements Initializable {
     private Button btnSolicitarCita;
 
     @FXML
-    private Button btnSolicitarCita1;
+    private Button btnValidarG;
 
     @FXML
-    private Button btnSolicitarCita11;
+    private Button btnVolver;
 
     @FXML
     private Label lbtextoBienvenida;
+
     @FXML
     private Pane paneOpciones;
 
     @FXML
-    private  Pane panePrincipal;
+    private  Pane paneDatos;
 
     @FXML
-    private Tab tapSolicitarCita=new Tab();
+    private Pane panePrincipal;
+
+    @FXML
+    private TabPane tabPane;
+
+    @FXML
+    private Tab tapCancelarModificar;
+
+    @FXML
+    private Tab tapConsultar;
+
+    @FXML
+    private Tab tapInicio;
+
+    @FXML
+    private Tab tapSolicitarCita;
+
+    @FXML
+    private TextField txtIdA;
+
+    @FXML
+    private TextField txtNombreA;
+
+    private Citas citas = new Citas();
+    private double originalX;
+    private double originalY;
 
 
     @FXML
-    private Tab tapConsultar  =new Tab();
-
-    @FXML
-    private Tab tapCancelarModificar=new Tab();
-    @FXML
-    private Tab tapInicio = new Tab();
-
-    @FXML
-    private  TabPane tabPane;
+    private Label lblInformativoG;
 
     @FXML
     void dirigirseCancelarOModificar(ActionEvent event) {
@@ -84,6 +104,24 @@ public class HelloController implements Initializable {
     }
 
     @FXML
+    void dirigirInicio (ActionEvent event) {
+        btnVolver.setLayoutX(originalX);
+        btnVolver.setLayoutY(originalY);
+        TabPane tabPane = tapInicio.getTabPane();
+
+        //sirve para pasar al tap solicitarCita
+        if (tabPane != null) {
+            tabPane.getSelectionModel().select(tapInicio);
+        }
+        tabPane.getTabs().remove(tapSolicitarCita);
+
+
+
+
+    }
+
+
+    @FXML
     void dirigirseSolicitarCita(ActionEvent event) {
         //para visualizar en la interfaz el tap antes de abrilo
         if (!tabPane.getTabs().contains(tapSolicitarCita)) {
@@ -95,6 +133,31 @@ public class HelloController implements Initializable {
         if (tabPane != null) {
             tabPane.getSelectionModel().select(tapSolicitarCita);
         }
+    }
+    @FXML
+    void validarA(ActionEvent event) {
+        originalX = btnVolver.getLayoutX();
+        originalY = btnVolver.getLayoutY();
+        panePrincipal.getChildren().add(paneDatos);
+        panePrincipal.getChildren().add(btnValidarG);
+        ArrayList<String> cedulas= citas.getCedulas();
+        for (int i = 0; i <cedulas.size() ; i++) {
+            if(cedulas.get(i).equals(txtIdA.getText())){
+
+            }
+        }
+        btnVolver.setLayoutX(274);
+        btnVolver.setLayoutY(261);
+        panePrincipal.getChildren().remove(paneDatos);
+        panePrincipal.getChildren().remove(btnValidarG);
+
+        paneDatos = null;
+
+
+
+
+
+
     }
 
 

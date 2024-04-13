@@ -16,7 +16,7 @@
    <children>
       <TabPane fx:id="tabPane" layoutX="-3.0" prefHeight="569.0" prefWidth="737.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Inicio" fx:id="tapInicio">
+          <Tab fx:id="tapInicio" text="Inicio">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="538.0" prefWidth="727.0" stylesheets="@Style/Style.css">
                      <children>
@@ -49,12 +49,7 @@
                               </Label>
                            </children>
                         </Pane>
-                        <Pane fx:id="paneOpciones" layoutX="2.0" layoutY="444.0" prefHeight="94.0" prefWidth="734.0">
-                           <children>
-                              <Button fx:id="btnSolicitarCita" layoutX="261.0" layoutY="24.0" mnemonicParsing="false" onAction="#dirigirseSolicitarCita" prefHeight="41.0" prefWidth="212.0" text="Solicitar cita ➔" />
-                              <Button fx:id="btnCancelarOModificar" layoutX="508.0" layoutY="24.0" mnemonicParsing="false" onAction="#dirigirseCancelarOModificar" prefHeight="41.0" prefWidth="212.0" text="cancelar o modificar ➔" textFill="#000b6b" />
-                              <Button fx:id="btnConsultarCita" layoutX="14.0" layoutY="24.0" mnemonicParsing="false" onAction="#dirigirseConsultarCita" prefHeight="41.0" prefWidth="212.0" text="Consultar cita ➔" />
-                           </children></Pane>
+                        <Pane fx:id="paneOpciones" layoutX="2.0" layoutY="439.0" prefHeight="99.0" prefWidth="734.0" />
                         <Pane fx:id="panePrincipal" layoutX="2.0" layoutY="84.0" prefHeight="354.0" prefWidth="734.0">
                            <children>
                               <ImageView fitHeight="356.0" fitWidth="533.0" layoutX="-6.0" nodeOrientation="RIGHT_TO_LEFT" opacity="0.68" pickOnBounds="true" preserveRatio="true">
@@ -77,48 +72,86 @@
                                     <Font name="System Bold" size="24.0" />
                                  </font>
                               </Label>
+                              <Button fx:id="btnConsultarCita" layoutX="14.0" layoutY="294.0" mnemonicParsing="false" onAction="#dirigirseConsultarCita" prefHeight="41.0" prefWidth="212.0" text="Consultar cita ➔" textFill="#000b6b" />
+                              <Button fx:id="btnSolicitarCita" layoutX="261.0" layoutY="294.0" mnemonicParsing="false" onAction="#dirigirseSolicitarCita" prefHeight="41.0" prefWidth="212.0" text="Solicitar cita ➔" textFill="#000b6b" />
+                              <Button fx:id="btnCancelarOModificar" layoutX="508.0" layoutY="294.0" mnemonicParsing="false" onAction="#dirigirseCancelarOModificar" prefHeight="41.0" prefWidth="212.0" text="cancelar o modificar ➔" textFill="#000b6b">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Button>
                            </children>
                         </Pane>
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="solicitar cita" fx:id="tapSolicitarCita">
+          <Tab fx:id="tapSolicitarCita" text="solicitar cita">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="538.0" prefWidth="656.0">
                      <children>
-                        <Label layoutX="412.0" layoutY="14.0" prefHeight="30.0" prefWidth="311.0" text="Agendamiento de citas medicas" textFill="#2831ab">
+                        <Label layoutX="314.0" layoutY="30.0" prefHeight="30.0" prefWidth="409.0" text="Agendamiento de citas medicas" textFill="#2831ab">
                            <font>
-                              <Font name="System Bold" size="20.0" />
+                              <Font name="System Bold" size="27.0" />
                            </font>
                         </Label>
-                        <AnchorPane layoutY="54.0" prefHeight="368.0" prefWidth="737.0">
+                        <AnchorPane layoutY="114.0" prefHeight="368.0" prefWidth="737.0">
                            <children>
-                              <Label layoutX="193.0" layoutY="23.0" text="Ingresa los siguientes datos para agendar tu turno:">
+                              <Label fx:id="lblInformativoG" layoutX="190.0" layoutY="21.0" text="Ingresa los siguientes datos para agendar tu turno:">
                                  <font>
-                                    <Font size="18.0" />
+                                    <Font size="22.0" />
                                  </font>
                               </Label>
-                              <ImageView fitHeight="58.0" fitWidth="68.0" layoutX="123.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="58.0" fitWidth="68.0" layoutX="54.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@imagenes/documento.jpg" />
                                  </image>
                               </ImageView>
-                              <Pane layoutX="93.0" layoutY="84.0" prefHeight="200.0" prefWidth="587.0">
+                              <Pane fx:id="paneDatos" layoutX="45.0" layoutY="66.0" prefHeight="186.0" prefWidth="648.0">
                                  <children>
-                                    <Label layoutX="30.0" layoutY="63.0" text="Nombre: *" />
-                                    <Label layoutX="226.0" layoutY="63.0" text="N° identificacion: *" />
-                                    <TextField layoutX="30.0" layoutY="101.0" />
-                                    <TextField layoutX="226.0" layoutY="101.0" />
-                                    <Button fx:id="btnSolicitarCita1" layoutX="43.0" layoutY="157.0" mnemonicParsing="false" onAction="#dirigirseSolicitarCita" prefHeight="25.0" prefWidth="190.0" text="Validar ➔" />
-                                    <Button fx:id="btnSolicitarCita11" layoutX="322.0" layoutY="157.0" mnemonicParsing="false" onAction="#dirigirseSolicitarCita" prefHeight="25.0" prefWidth="190.0" text="Volver ➔" />
-                                    <Label layoutX="37.0" layoutY="14.0" text="Los campos señalados con ( * ) son obligatorios:" />
-                                    <Label layoutX="425.0" layoutY="63.0" text="Tipo de cita" />
-                                    <ChoiceBox layoutX="425.0" layoutY="101.0" prefWidth="150.0" />
+                                    <Label layoutX="21.0" layoutY="65.0" text="Nombre: *">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font></Label>
+                                    <Label layoutX="233.0" layoutY="65.0" text="N° identificacion: *">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font></Label>
+                                    <TextField fx:id="txtNombreA" layoutX="21.0" layoutY="101.0" prefHeight="27.0" prefWidth="190.0" />
+                                    <TextField fx:id="txtIdA" layoutX="233.0" layoutY="101.0" prefWidth="190.0" />
+                                    <Label layoutX="10.0" layoutY="14.0" text="Los campos señalados con ( * ) son obligatorios:">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font></Label>
+                                    <Label layoutX="444.0" layoutY="63.0" prefHeight="25.0" prefWidth="102.0" text="Tipo de cita: *">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font></Label>
+                                    <ChoiceBox fx:id="boxTipoCita" layoutX="444.0" layoutY="101.0" prefHeight="27.0" prefWidth="190.0" />
                                  </children>
                               </Pane>
+                              <Button fx:id="btnValidarG" layoutX="114.0" layoutY="261.0" mnemonicParsing="false" onAction="#validarA" prefHeight="25.0" prefWidth="190.0" text="Validar ➔" />
+                              <Button fx:id="btnVolver" layoutX="369.0" layoutY="261.0" mnemonicParsing="false" onAction="#dirigirInicio" prefHeight="25.0" prefWidth="190.0" text="Volver ➔" />
                            </children>
                         </AnchorPane>
+                        <Label layoutX="30.0" layoutY="25.0" text="Nue" textFill="#39b7dd">
+                           <font>
+                              <Font name="System Bold" size="27.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="83.0" layoutY="25.0" text="v" textFill="#eb2929">
+                           <font>
+                              <Font name="System Bold" size="28.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="99.0" layoutY="24.0" text="o" textFill="#39b7dd">
+                           <font>
+                              <Font name="System Bold" size="28.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="95.0" layoutY="49.0" text="eps" textFill="#39b7dd">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
             </content>

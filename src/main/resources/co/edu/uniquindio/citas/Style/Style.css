@@ -20,6 +20,4 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.20), 30, 0, 0, 0); /* Efecto de sombra */
     -fx-scale-x: 1.1; /* Agranda el botón horizontalmente */
     -fx-scale-y: 1.1; /* Agranda el botón verticalmente */
-
-
 }
