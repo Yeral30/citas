@@ -105,8 +105,8 @@ public class HelloController implements Initializable {
 
     @FXML
     void dirigirInicio (ActionEvent event) {
-        btnVolver.setLayoutX(originalX);
-        btnVolver.setLayoutY(originalY);
+      //  btnVolver.setLayoutX(originalX);
+       // btnVolver.setLayoutY(originalY);
         TabPane tabPane = tapInicio.getTabPane();
 
         //sirve para pasar al tap solicitarCita
@@ -136,7 +136,9 @@ public class HelloController implements Initializable {
     }
     @FXML
     void validarA(ActionEvent event) {
-        originalX = btnVolver.getLayoutX();
+
+        //NO ELIMINAR
+      /*  originalX = btnVolver.getLayoutX();
         originalY = btnVolver.getLayoutY();
         panePrincipal.getChildren().add(paneDatos);
         panePrincipal.getChildren().add(btnValidarG);
@@ -152,6 +154,8 @@ public class HelloController implements Initializable {
         panePrincipal.getChildren().remove(btnValidarG);
 
         paneDatos = null;
+        */
+
 
 
 
