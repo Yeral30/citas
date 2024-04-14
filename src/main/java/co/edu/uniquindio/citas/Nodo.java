@@ -1,4 +1,4 @@
-package co.edu.uniquindio.citas.PatronColas;
+package co.edu.uniquindio.citas;
 
 
 /**

@@ -1,21 +1,29 @@
 package co.edu.uniquindio.citas.controllersView;
 
 import co.edu.uniquindio.citas.Citas;
+import co.edu.uniquindio.citas.controller.Controller;
+import co.edu.uniquindio.citas.model.Cita;
+import co.edu.uniquindio.citas.model.Paciente;
+import co.edu.uniquindio.citas.model.enumeraciones.TipoCita;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class HelloController implements Initializable {
 
     @FXML
-    private ChoiceBox<?> boxTipoCita;
+    private ChoiceBox<TipoCita> boxTipoCita;
 
     @FXML
     private Button btnCancelarOModificar;
@@ -30,6 +38,9 @@ public class HelloController implements Initializable {
     private Button btnValidarG;
 
     @FXML
+    private Button btnValidarGAux;
+
+    @FXML
     private Button btnVolver;
 
     @FXML
@@ -39,7 +50,7 @@ public class HelloController implements Initializable {
     private Pane paneOpciones;
 
     @FXML
-    private  Pane paneDatos;
+    private Pane paneDatos;
 
     @FXML
     private Pane panePrincipal;
@@ -65,13 +76,33 @@ public class HelloController implements Initializable {
     @FXML
     private TextField txtNombreA;
 
-    private Citas citas = new Citas();
+   private Controller controller= new Controller();
+
+
+
+
+
     private double originalX;
     private double originalY;
+
+    @FXML
+    private Label labelMensajeG = new Label();
+
+    @FXML
+    private Pane panePaderSolicitarCita;
 
 
     @FXML
     private Label lblInformativoG;
+
+    @FXML
+    private ImageView imgRegistro;
+
+    private double cordenadasXimg;
+    private double cordenadasYimg;
+    private  LocalDateTime fechaActual ;
+
+    private  LocalDateTime fechaAsignacion;
 
     @FXML
     void dirigirseCancelarOModificar(ActionEvent event) {
@@ -101,22 +132,40 @@ public class HelloController implements Initializable {
             tabPane.getSelectionModel().select(tapConsultar);
         }
 
+
     }
 
     @FXML
-    void dirigirInicio (ActionEvent event) {
-      //  btnVolver.setLayoutX(originalX);
-       // btnVolver.setLayoutY(originalY);
+    void dirigirInicio(ActionEvent event) {
+        // Restaurar las coordenadas originales de btnVolver
+        btnVolver.setLayoutX(originalX);
+        btnVolver.setLayoutY(originalY);
+
         TabPane tabPane = tapInicio.getTabPane();
 
-        //sirve para pasar al tap solicitarCita
+        // Seleccionar la pestaña de inicio
         if (tabPane != null) {
             tabPane.getSelectionModel().select(tapInicio);
         }
-        tabPane.getTabs().remove(tapSolicitarCita);
 
+        // Remover la pestaña de solicitar cita si existe
+        if (tabPane.getTabs().contains(tapSolicitarCita)) {
+            tabPane.getTabs().remove(tapSolicitarCita);
+        }
 
-
+        // Verificar si paneAux no es nulo y si no está ya presente en panePaderSolicitarCita
+        if (paneDatos != null && !panePaderSolicitarCita.getChildren().contains(paneDatos)) {
+            // Agregar paneAux a panePaderSolicitarCita si no está presente y no es nulo
+            panePaderSolicitarCita.getChildren().add(paneDatos);
+        }
+        // Verificar si btnValidar no es nulo y si no está ya presente en panePaderSolicitarCita
+        if (btnValidarG != null && !panePaderSolicitarCita.getChildren().contains(btnValidarG)) {
+            // Agregar btnValidar a panePaderSolicitarCita si no está presente y no es nulo
+            panePaderSolicitarCita.getChildren().add(btnValidarG);
+        }
+        lblInformativoG.setText("Ingresa los siguientes datos para agendar tu turno:");
+        imgRegistro.setLayoutY(cordenadasYimg);
+        panePaderSolicitarCita.getChildren().remove(labelMensajeG);
 
     }
 
@@ -134,37 +183,112 @@ public class HelloController implements Initializable {
             tabPane.getSelectionModel().select(tapSolicitarCita);
         }
     }
+
     @FXML
     void validarA(ActionEvent event) {
+        boolean encontroCedula= false;
+        if (validarCamposSolicitarCampos()) {
+                if (validarCamposSolicitarCampos()) {
+                    if(controller.verificarSiEsAfiliado(txtIdA.getText())){
+                        reOrganizarInterfazSolicitarCita(txtIdA.getText());
+                        encontroCedula=true;
 
-        //NO ELIMINAR
-      /*  originalX = btnVolver.getLayoutX();
-        originalY = btnVolver.getLayoutY();
-        panePrincipal.getChildren().add(paneDatos);
-        panePrincipal.getChildren().add(btnValidarG);
-        ArrayList<String> cedulas= citas.getCedulas();
-        for (int i = 0; i <cedulas.size() ; i++) {
-            if(cedulas.get(i).equals(txtIdA.getText())){
+                        // se contruye el paciente y la cita
+                        Paciente paciente= new Paciente(txtNombreA.getText(),txtIdA.getText());
+                        Cita cita= new Cita(paciente, boxTipoCita.getValue());
 
+
+                        //acomodacion fechas
+                    }else {
+                        if(!encontroCedula){
+                            mostrarMensaje(Alert.AlertType.WARNING,"La cedula no ha sido encontrada", """
+                        su cedula no ha sido encontrada,
+                        verifique su cedula o
+                        puede que no este afiliado
+                        comuniquese con nuestra
+                        area de afiliacion nuevo eps
+                        atra ves del numero (10080003)""");
+                        }
+                    }
+                }
             }
+
         }
-        btnVolver.setLayoutX(274);
-        btnVolver.setLayoutY(261);
-        panePrincipal.getChildren().remove(paneDatos);
-        panePrincipal.getChildren().remove(btnValidarG);
 
-        paneDatos = null;
-        */
+        private void vaciarCampos(){
+            txtNombreA.setText("");
+            txtIdA.setText("");
+        }
 
 
 
+        //asignacion fecha
+    private LocalDateTime aiginarFehaCita(){
 
-
-
-
+       fechaAsignacion = incrementarHora(fechaAsignacion, 30);
+        return  fechaAsignacion;
+    }
+    private static LocalDateTime incrementarHora(LocalDateTime fecha, int minutos) {
+        return fecha.plusMinutes(minutos);
     }
 
 
+
+    private void reOrganizarInterfazSolicitarCita(String cedula) {
+        //se guardan las coordenadas del pane
+        originalX = btnVolver.getLayoutX();
+        originalY = btnVolver.getLayoutY();
+        //se agregan los objetos de interfaz que se van a quitar
+        if (paneDatos != null && !panePrincipal.getChildren().contains(paneDatos)) {
+            panePrincipal.getChildren().add(paneDatos);
+        }
+        if (btnValidarG != null && !panePrincipal.getChildren().contains(btnValidarG)) {
+            panePrincipal.getChildren().add(btnValidarG);
+        }
+        // se mueven los botones para una nueva interfas
+        btnVolver.setLayoutX(274);
+        btnVolver.setLayoutY(261);
+
+        panePrincipal.getChildren().remove(paneDatos);
+        panePrincipal.getChildren().remove(btnValidarG);
+
+        lblInformativoG.setText("""
+                Su cita ha sido registrada correctamente""");
+        labelMensajeG.setText("su numero de cita es: " + cedula);
+        panePaderSolicitarCita.getChildren().add(labelMensajeG);
+        labelMensajeG.setLayoutY(101);
+        labelMensajeG.setLayoutX(166);
+        labelMensajeG.setStyle("-fx-font-size: 35px; -fx-font-weight: bold; -fx-underline: true;");
+        cordenadasXimg = imgRegistro.getLayoutX();
+        cordenadasYimg = imgRegistro.getLayoutY();
+        imgRegistro.setLayoutX(101);
+
+    }
+
+    private boolean validarCamposSolicitarCampos() {
+        boolean confirmacion = true;
+        String mensaje = "";
+        if (txtIdA.getText() == null || txtIdA.getText().equals("")) {
+            mensaje += "Debe poner  su identificacion en el  campo identificacion\n";
+        }
+        if (txtNombreA.getText() == null || txtNombreA.getText().equals("")) {
+            mensaje += "Debe poner su nombre en el campo Nombre\n";
+        }
+
+        if (mensaje != "") {
+            confirmacion = false;
+            mostrarMensaje(Alert.AlertType.INFORMATION, "Faltan campos Por rellenar", mensaje);
+        }
+        return confirmacion;
+    }
+
+    private void mostrarMensaje(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -172,7 +296,20 @@ public class HelloController implements Initializable {
         tabPane.getTabs().remove(tapCancelarModificar);
         tabPane.getTabs().remove(tapConsultar);
 
-        }
+        originalX = btnVolver.getLayoutX();
+        originalY = btnVolver.getLayoutY();
+
+        ObservableList<TipoCita> tiposCitaList = FXCollections.observableArrayList(TipoCita.values());
+        boxTipoCita.setItems(tiposCitaList);
+        // Establecer una opción predeterminada
+        boxTipoCita.setValue(TipoCita.MEDICO_GENERAL);
+
+        fechaActual= LocalDateTime.now();
+
+        fechaAsignacion= fechaActual;
+
+
+    }
 
 
 }

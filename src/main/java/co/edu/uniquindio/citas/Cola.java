@@ -1,5 +1,4 @@
-package co.edu.uniquindio.citas.PatronColas;
-
+package co.edu.uniquindio.citas;
 
 
 public class Cola<T> {
@@ -19,8 +18,8 @@ public class Cola<T> {
     //--------------------metodos-------------------------
 
 
-    //Agregar al final de la cola
-    public void agregarfinal(T valorNodo) {
+    //Agregar primera cita
+    public void agrgarPrimeraCita(T valorNodo) {
         Nodo<T> nodo = new Nodo  (valorNodo);
 
         if (estaVacia()) {
@@ -31,6 +30,14 @@ public class Cola<T> {
         }
         tamanio++;
     }
+
+
+
+
+
+
+
+
 
     //Verificar si la cola esta vacia
     public boolean estaVacia() {
