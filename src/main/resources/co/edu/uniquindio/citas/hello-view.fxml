@@ -74,10 +74,7 @@
                               </Label>
                               <Button fx:id="btnConsultarCita" layoutX="14.0" layoutY="294.0" mnemonicParsing="false" onAction="#dirigirseConsultarCita" prefHeight="41.0" prefWidth="212.0" text="Consultar cita ➔" textFill="#000b6b" />
                               <Button fx:id="btnSolicitarCita" layoutX="261.0" layoutY="294.0" mnemonicParsing="false" onAction="#dirigirseSolicitarCita" prefHeight="41.0" prefWidth="212.0" text="Solicitar cita ➔" textFill="#000b6b" />
-                              <Button fx:id="btnCancelarOModificar" layoutX="508.0" layoutY="294.0" mnemonicParsing="false" onAction="#dirigirseCancelarOModificar" prefHeight="41.0" prefWidth="212.0" text="cancelar o modificar ➔" textFill="#000b6b">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font></Button>
+                              <Button fx:id="btnCancelarOModificar" layoutX="508.0" layoutY="294.0" mnemonicParsing="false" onAction="#dirigirseCancelarOModificar" prefHeight="41.0" prefWidth="212.0" text="cancelar o modificar ➔" textFill="#000b6b" />
                            </children>
                         </Pane>
                      </children>
@@ -86,14 +83,14 @@
           </Tab>
           <Tab fx:id="tapSolicitarCita" text="solicitar cita">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="538.0" prefWidth="656.0" stylesheets="@Style/Style.css">
+              <AnchorPane fx:id="panePrincipalSolicitarCita" minHeight="0.0" minWidth="0.0" prefHeight="538.0" prefWidth="656.0" stylesheets="@Style/Style.css">
                      <children>
                         <Label layoutX="314.0" layoutY="30.0" prefHeight="30.0" prefWidth="409.0" text="Agendamiento de citas medicas" textFill="#2831ab">
                            <font>
                               <Font name="System Bold" size="27.0" />
                            </font>
                         </Label>
-                        <AnchorPane fx:id="panePaderSolicitarCita" layoutY="114.0" prefHeight="368.0" prefWidth="737.0">
+                        <AnchorPane fx:id="panePaderSolicitarCita" layoutX="14.0" layoutY="114.0" prefHeight="368.0" prefWidth="714.0">
                            <children>
                               <Label fx:id="lblInformativoG" layoutX="190.0" layoutY="21.0" text="Ingresa los siguientes datos para agendar tu turno:">
                                  <font>
@@ -110,21 +107,25 @@
                                     <Label layoutX="21.0" layoutY="65.0" text="Nombre: *">
                                        <font>
                                           <Font size="15.0" />
-                                       </font></Label>
+                                       </font>
+                                    </Label>
                                     <Label layoutX="233.0" layoutY="65.0" text="N° identificacion: *">
                                        <font>
                                           <Font size="15.0" />
-                                       </font></Label>
+                                       </font>
+                                    </Label>
                                     <TextField fx:id="txtNombreA" layoutX="21.0" layoutY="101.0" prefHeight="27.0" prefWidth="190.0" />
                                     <TextField fx:id="txtIdA" layoutX="233.0" layoutY="101.0" prefWidth="190.0" />
                                     <Label layoutX="10.0" layoutY="14.0" text="Los campos señalados con ( * ) son obligatorios:">
                                        <font>
                                           <Font size="16.0" />
-                                       </font></Label>
+                                       </font>
+                                    </Label>
                                     <Label layoutX="444.0" layoutY="63.0" prefHeight="25.0" prefWidth="102.0" text="Tipo de cita: *">
                                        <font>
                                           <Font size="15.0" />
-                                       </font></Label>
+                                       </font>
+                                    </Label>
                                     <ChoiceBox fx:id="boxTipoCita" layoutX="444.0" layoutY="101.0" prefHeight="27.0" prefWidth="190.0" />
                                  </children>
                               </Pane>

@@ -4,81 +4,32 @@ import co.edu.uniquindio.citas.model.enumeraciones.Prioridad;
 import co.edu.uniquindio.citas.model.enumeraciones.TipoCita;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Cita {
 
     private Paciente paciente;
     private String numeroCita;
-    private LocalDate fechaCita;
+    private LocalDateTime fechaCita;
     private TipoCita tipoCita;
-    private static int numeroMedicoGeneral;
-    private static int numeroCirugiaProgramada;
-    private static int numeroUrgencia;
 
 
 
-    public Cita(Paciente paciente, TipoCita tipoCita) {
+
+    public Cita(Paciente paciente, TipoCita tipoCita, String numeroCita, LocalDateTime programacionCita) {
+        fechaCita=programacionCita;
         this.paciente = paciente;
-        this.numeroCita = AsignarNumeroCita(tipoCita);
-        this.fechaCita = AsignarfechaCita(tipoCita);
+        this.numeroCita=numeroCita;
         this.tipoCita = tipoCita;
 
     }
 
-    /**
-     * - Si la prioridad del tipo de cita es menor que la prioridad "ALTA",
-     * 'compareTo()' devolverá un valor negativo.
-     *  - Si son iguales, devolverá cero.
-     *  - Si la prioridad del tipo de cita es mayor que la prioridad "ALTA",
-     *  devolverá un valor positivo.
-     * @param tipoCita
-     * @return
-     */
-
-    public String AsignarNumeroCita(TipoCita tipoCita){
-        String numeroCita="";
-         if(tipoCita.getPrioridad().compareTo(Prioridad.ALTA)==0){
-             numeroCita= "U"+numeroUrgencia;
-             numeroUrgencia++;
-         } else if (tipoCita.getPrioridad().compareTo(Prioridad.MEDIA)==0) {
-             numeroCita= "C"+numeroCirugiaProgramada;
-             numeroCirugiaProgramada++;
-         }else {
-             numeroCita= "G"+numeroMedicoGeneral;
-             numeroMedicoGeneral++;
-
-         }
 
 
-        return numeroCita;
-    }
 
 
-    /**
-     * se necesita la lista donde se van almacenar a los pacientes para poder hacer
-     * la logica para este metodo
-     * @param tipoCita
-     * @return
-     */
-    public LocalDate AsignarfechaCita(TipoCita tipoCita){
-        LocalDate fecha = null;
 
 
-        if(tipoCita.getPrioridad().compareTo(Prioridad.ALTA)==0){
-
-            //logica
-        } else if (tipoCita.getPrioridad().compareTo(Prioridad.MEDIA)==0) {
-            //logica
-
-        }else {
-            //logica
-
-
-        }
-
-        return  fecha;
-
-    }
 
 
     public Paciente getPaciente() {
@@ -89,9 +40,7 @@ public class Cita {
         return numeroCita;
     }
 
-    public LocalDate getFechaCita() {
-        return fechaCita;
-    }
+
 
     public TipoCita getTipoCita() {
         return tipoCita;
@@ -105,9 +54,7 @@ public class Cita {
         this.numeroCita = numeroCita;
     }
 
-    public void setFechaCita(LocalDate fechaCita) {
-        this.fechaCita = fechaCita;
-    }
+
 
     public void setTipoCita(TipoCita tipoCita) {
         this.tipoCita = tipoCita;
