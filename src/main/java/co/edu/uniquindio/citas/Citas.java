@@ -1,5 +1,7 @@
 package co.edu.uniquindio.citas;
 
+import co.edu.uniquindio.citas.model.Cita;
+import co.edu.uniquindio.citas.model.Paciente;
 import co.edu.uniquindio.citas.model.enumeraciones.Prioridad;
 import co.edu.uniquindio.citas.model.enumeraciones.TipoCita;
 import javafx.fxml.Initializable;
@@ -7,9 +9,7 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class Citas {
     private String numeroCita;
@@ -22,14 +22,19 @@ public class Citas {
     ;
     private LocalDateTime fechaAsignacionUrgencias = LocalDateTime.now();
     ;
-
-
     private ArrayList<String> cedulas = new ArrayList<>();
 
     public ArrayList<String> getCedulas() {
         return cedulas;
     }
 
+    // Crear una PriorityQueue para manejar las citas con prioridad
+    private PriorityQueue<Cita> colaDeCitas = new PriorityQueue<>(new Comparator<Cita>() {
+        @Override
+        public int compare(Cita c1, Cita c2) {
+            return c2.getPrioridad().compareTo(c1.getPrioridad());
+        }
+    });
     public ArrayList<String> cargarCedula() {
         cedulas.add("123");
         cedulas.add("12");
@@ -58,49 +63,45 @@ public class Citas {
      * @param tipoCita
      * @return
      */
-    public String AsignarNumeroCita(TipoCita tipoCita) {
+    public String asignarNumeroCita(TipoCita tipoCita, Paciente paciente) {
+        String numeroCita = calcularNumeroCita(tipoCita);
+        LocalDateTime fechaAsignacion = asignarFechaCita(tipoCita);
+
+        // Crear la nueva cita con todos los detalles necesarios
+        Cita nuevaCita = new Cita(paciente, tipoCita, numeroCita, fechaAsignacion);
+        colaDeCitas.add(nuevaCita);
+
+        return numeroCita;
+    }
+    private String calcularNumeroCita(TipoCita tipoCita) {
         String numeroCita = "";
-        if (tipoCita.getPrioridad().compareTo(Prioridad.ALTA) == 0) {
-            numeroCita = "U" + numeroUrgencia;
-            numeroUrgencia++;
-        } else if (tipoCita.getPrioridad().compareTo(Prioridad.MEDIA) == 0) {
-            numeroCita = "C" + numeroCirugiaProgramada;
-            numeroCirugiaProgramada++;
+        if (tipoCita.getPrioridad() == Prioridad.ALTA) {
+            numeroCita = "U" + numeroUrgencia++;
+        } else if (tipoCita.getPrioridad() == Prioridad.MEDIA) {
+            numeroCita = "C" + numeroCirugiaProgramada++;
         } else {
-            numeroCita = "G" + numeroMedicoGeneral;
-            numeroMedicoGeneral++;
-
+            numeroCita = "G" + numeroMedicoGeneral++;
         }
-
-
         return numeroCita;
     }
 
     //asignacion fecha
-    public LocalDateTime aiginarFehaCita(TipoCita tipoCita) {
+    public LocalDateTime asignarFechaCita(TipoCita tipoCita) {
         if (tipoCita.getPrioridad().compareTo(Prioridad.ALTA) == 0) {
             fechaAsignacionUrgencias=incrementarHora(fechaAsignacionUrgencias,30);
-
             return fechaAsignacionUrgencias;
         } else if (tipoCita.getPrioridad().compareTo(Prioridad.MEDIA) == 0) {
-
             fechaAsignacionProgramadas=incrementarHora(fechaAsignacionProgramadas,25);
             return fechaAsignacionProgramadas;
         } else {
             fechaAsignacionGeneral=incrementarHora(fechaAsignacionGeneral,10);
             return fechaAsignacionGeneral;
         }
-
     }
-
     private  LocalDateTime incrementarHora(LocalDateTime fecha, int minutos) {
         return fecha.plusMinutes(minutos);
     }
-
-
     public void setCedulas(ArrayList<String> cedulas) {
         this.cedulas = cedulas;
     }
-
-
 }

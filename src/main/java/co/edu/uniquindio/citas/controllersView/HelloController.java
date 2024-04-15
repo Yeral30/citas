@@ -202,39 +202,31 @@ public class HelloController implements Initializable {
     @FXML
     void validarA(ActionEvent event) {
         boolean encontroCedula = false;
-        if (validarCamposSolicitarCampos()) {
+        if (validarCamposSolicitarCampos()) { // Asegúrate de que este método está correctamente definido para validar campos
+            String cedula = txtIdA.getText();
+            String nombre = txtNombreA.getText();
+            TipoCita tipoCita = boxTipoCita.getValue(); // Asegúrate de que boxTipoCita está correctamente inicializado
 
-            if (controller.verificarSiEsAfiliado(txtIdA.getText())) {
+            if (controller.verificarSiEsAfiliado(cedula)) {
+                // Construye el paciente y la cita directamente en el controlador
+                String numCita = controller.asignarNumeroCita(tipoCita, nombre, cedula);  // Usando el nuevo método corregido
+                LocalDateTime fechaAsignacion = controller.asignarFechaCita(tipoCita);  // Usando el nuevo método corregido
 
-
-                // se contruye el paciente y la cita
-                String numCIta = controller.numeroCita(boxTipoCita.getValue());
-                fechaAsignacion = controller.obtenerFechas(boxTipoCita.getValue());
-
-                Paciente paciente = new Paciente(txtNombreA.getText(), txtIdA.getText());
-                Cita cita = new Cita(paciente, boxTipoCita.getValue(), numCIta, fechaAsignacion);
-                reOrganizarInterfazSolicitarCita(txtIdA.getText(), numCIta, fechaAsignacion);
+                // reOrganizarInterfazSolicitarCita puede actualizarse para manejar el display de la información
+                reOrganizarInterfazSolicitarCita(cedula, numCita, fechaAsignacion);
                 encontroCedula = true;
-
-                //la patron
-
-
-
             } else {
-                if (!encontroCedula) {
-                    mostrarMensaje(Alert.AlertType.WARNING, "La cedula no ha sido encontrada", """
-                            su cedula no ha sido encontrada,
-                            verifique su cedula o
-                            puede que no este afiliado
-                            comuniquese con nuestra
-                            area de afiliacion nuevo eps
-                            atra ves del numero (10080003)""");
-                }
+                mostrarMensaje(Alert.AlertType.WARNING, "La cédula no ha sido encontrada", """
+                    Su cédula no ha sido encontrada,
+                    verifique su cédula o
+                    puede que no esté afiliado.
+                    Comuníquese con nuestra
+                    área de afiliación de Nuevo EPS
+                    a través del número (10080003).""");
             }
-
         }
-
     }
+
 
     private void vaciarCampos() {
         txtNombreA.setText("");

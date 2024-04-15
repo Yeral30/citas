@@ -12,7 +12,7 @@ public class Cita {
     private String numeroCita;
     private LocalDateTime fechaCita;
     private TipoCita tipoCita;
-
+    private Prioridad prioridad;
 
 
 
@@ -21,15 +21,9 @@ public class Cita {
         this.paciente = paciente;
         this.numeroCita=numeroCita;
         this.tipoCita = tipoCita;
+        this.prioridad = tipoCita.getPrioridad();
 
     }
-
-
-
-
-
-
-
 
 
     public Paciente getPaciente() {
@@ -39,8 +33,6 @@ public class Cita {
     public String getNumeroCita() {
         return numeroCita;
     }
-
-
 
     public TipoCita getTipoCita() {
         return tipoCita;
@@ -54,9 +46,15 @@ public class Cita {
         this.numeroCita = numeroCita;
     }
 
-
-
     public void setTipoCita(TipoCita tipoCita) {
         this.tipoCita = tipoCita;
+    }
+
+    public Prioridad getPrioridad() {
+        return prioridad;
+    }
+
+    public void setPrioridad(Prioridad prioridad) {
+        this.prioridad = prioridad;
     }
 }

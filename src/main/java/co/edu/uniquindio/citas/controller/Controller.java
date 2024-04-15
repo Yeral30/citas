@@ -1,25 +1,28 @@
 package co.edu.uniquindio.citas.controller;
 
 import co.edu.uniquindio.citas.Citas;
+import co.edu.uniquindio.citas.model.Paciente;
 import co.edu.uniquindio.citas.model.enumeraciones.TipoCita;
 
 import java.time.LocalDateTime;
 
 public class Controller {
+    private Citas citas = new Citas();
 
-    private Citas citas= new Citas();
-
-    //verifica si es afiliado o no
+    // Verifica si es afiliado o no
     public boolean verificarSiEsAfiliado(String cedulaInterfaz){
         return citas.verificarSiEsAfiliado(cedulaInterfaz);
     }
 
-    public String numeroCita(TipoCita tipoCita){
-        return citas.AsignarNumeroCita(tipoCita);
+    // Asigna un número de cita teniendo un paciente
+    public String asignarNumeroCita(TipoCita tipoCita, String nombrePaciente, String idPaciente) {
+        Paciente paciente = new Paciente(nombrePaciente, idPaciente); // Crea un paciente con datos proporcionados.
+        return citas.asignarNumeroCita(tipoCita, paciente); // Llama al método correcto con ambos parámetros.
     }
 
-    public LocalDateTime obtenerFechas(TipoCita tipoCita){
-        return citas.aiginarFehaCita(tipoCita);
+    // Obtiene la fecha asignada a una cita
+    public LocalDateTime asignarFechaCita(TipoCita tipoCita) {
+        return citas.asignarFechaCita(tipoCita);
     }
-
 }
+
