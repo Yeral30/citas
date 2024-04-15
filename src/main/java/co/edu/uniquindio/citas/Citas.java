@@ -24,6 +24,8 @@ public class Citas {
     ;
     private ArrayList<String> cedulas = new ArrayList<>();
 
+
+
     public ArrayList<String> getCedulas() {
         return cedulas;
     }
@@ -130,6 +132,30 @@ public class Citas {
             if (c.getTipoCita().compareTo(cita.getTipoCita()) == 0) {
                 if (c.getPaciente().getIdentificacion().compareTo(cita.getPaciente().getIdentificacion())==0){
                     citaAux=c;
+                }
+            }
+        }
+        return citaAux;
+
+    }
+    public Cita verificarNumeroCita(Cita cita) {
+
+        Cita citaAux = null;
+        Iterator<Cita> iterator = colaDeCitas.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(cita.getPaciente().getNombre());
+            Cita c = iterator.next();
+            if (c.getTipoCita().compareTo(cita.getTipoCita()) == 0) {
+                System.out.println("condicion1");
+                if (c.getPaciente().getIdentificacion().compareTo(cita.getPaciente().getIdentificacion())==0){
+                    System.out.println("condicion2");
+
+                   if (c.getNumeroCita().compareTo(cita.getNumeroCita())==0){
+                       System.out.println("condicion3");
+                      citaAux=c;
+
+
+                    }
                 }
             }
         }

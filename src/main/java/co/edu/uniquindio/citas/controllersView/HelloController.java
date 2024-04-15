@@ -2,6 +2,7 @@ package co.edu.uniquindio.citas.controllersView;
 
 import co.edu.uniquindio.citas.controller.Controller;
 import co.edu.uniquindio.citas.model.Cita;
+import co.edu.uniquindio.citas.model.Paciente;
 import co.edu.uniquindio.citas.model.enumeraciones.TipoCita;
 import co.edu.uniquindio.citas.model.enumeraciones.TipoDocumento;
 import javafx.collections.FXCollections;
@@ -364,15 +365,48 @@ public class HelloController implements Initializable {
             if (cita == null) {
                 JOptionPane.showMessageDialog(null, "no tiene citas pendientes");
             } else {
-                JOptionPane.showMessageDialog(null, "Señ@r " + cita.getPaciente().getNombre() + " con numero de cedula " +
-                        cita.getPaciente().getIdentificacion() +
-                        " \nverificamos en el sistema que efectivamente tiene una cita \n el numero de la cita es: " + cita.getNumeroCita()
-                        + " la fecha y hora de su cita es: " + cita.getFechaCita());
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Debe de llenar todos los campos");
+                //se guardan las coordenadas del pane
+                originalX = btnVolverConsultarCita.getLayoutX();
+                originalY = btnVolverConsultarCita.getLayoutY();
+                //se agregan los objetos de interfaz que se van a quitar
+                if (paneDatosConsultarCita != null && !panePaderConsultarCita.getChildren().contains(paneDatosConsultarCita)) {
+                    panePrincipal.getChildren().add(paneDatos);
+                }
+                if (btnConsultarCita != null && !panePaderConsultarCita.getChildren().contains(btnAceptarConsultarCita)) {
+                    panePrincipal.getChildren().add(btnAceptarConsultarCita);
+                }
+                // se mueven los botones para una nueva interfas
+                btnConsultarCita.setLayoutX(274);
+                btnConsultarCita.setLayoutY(261);
 
+                panePaderConsultarCita.getChildren().remove(paneDatosConsultarCita);
+                panePaderConsultarCita.getChildren().remove(btnAceptarConsultarCita);
+
+                lblInformativoG.setText("""
+                        Su cita ha sido registrada correctamente""");
+                labelMensajeG.setText("su numero de cita es: " + cita.getNumeroCita() + "\nfue asignada para el dia: \n" + cita.getFechaCita().format(formatter));
+                panePaderConsultarCita.getChildren().add(labelMensajeG);
+                labelMensajeG.setLayoutY(80);
+                labelMensajeG.setLayoutX(145);
+                labelMensajeG.setStyle("-fx-font-size: 35px; -fx-font-weight: bold; -fx-underline: true;");
+                cordenadasXimg = imgRegistro.getLayoutX();
+                cordenadasYimg = imgRegistro.getLayoutY();
+                imgRegistro.setLayoutX(101);
+
+
+            }
+
+
+            JOptionPane.showMessageDialog(null, "Señ@r " + cita.getPaciente().getNombre() + " con numero de cedula " +
+                    cita.getPaciente().getIdentificacion() +
+                    " \nverificamos en el sistema que efectivamente tiene una cita \n el numero de la cita es: " + cita.getNumeroCita()
+                    + " la fecha y hora de su cita es: " + cita.getFechaCita());
         }
+        /**} else {
+         JOptionPane.showMessageDialog(null, "Debe de llenar todos los campos");
+
+         }
+         */
 
     }
 
@@ -432,6 +466,73 @@ public class HelloController implements Initializable {
     }
 
 
-    public void dirigirInicioDesdeConsultar(ActionEvent event) {
+    //-----------------------------------cancelar o modificar -----------------------------
+
+
+    @FXML
+    private ChoiceBox<?> boxTipoDocumentoCancelar;
+
+    @FXML
+    private Button btnAceptarCancelar;
+
+    @FXML
+    private Button btnVolverCancelar;
+
+    @FXML
+    private ImageView imgRegistro21;
+
+    @FXML
+    private Label lblInformativoG21;
+
+    @FXML
+    private Label lblInformativoG2111;
+
+
+    @FXML
+    private Pane paneDatosCancelar;
+
+    @FXML
+    private AnchorPane panePaderCancelar;
+
+    @FXML
+    private AnchorPane panePrincipalCancelar;
+
+
+    @FXML
+    private TextField txtIdCancelar;
+
+    @FXML
+    private TextField txtNumeroCitaCancelar;
+
+    @FXML
+    void aceptarCancelar(ActionEvent event) {
+        TipoCita tipoCita;
+        Cita cita;
+        String id = txtIdCancelar.getText();
+        String numeroCita = txtNumeroCitaCancelar.getText();
+        if (numeroCita.charAt(0) == 'U') {
+            tipoCita = TipoCita.URGENCIA;
+        } else if (numeroCita.charAt(0) == 'C') {
+
+            tipoCita = TipoCita.CIRUGIA_PROGRAMADA;
+    }else{
+            tipoCita = TipoCita.MEDICO_GENERAL;
+        }
+            cita =controller.obtenerCita(new Cita(new Paciente("",id),tipoCita,numeroCita,null));
+        if (cita == null){
+            JOptionPane.showMessageDialog(null, "Usted no tiene citas pendientes");
+        }else{
+            JOptionPane.showMessageDialog(null, "puede modificar su cita");
+
+
+        }
+
+}
+
+    @FXML
+    void dirigirInicioDesdeCancelar(ActionEvent event) {
+
     }
+
+
 }

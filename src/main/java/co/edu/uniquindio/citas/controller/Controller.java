@@ -10,6 +10,13 @@ import java.time.LocalDateTime;
 public class Controller {
     private Citas citas = new Citas();
 
+    public  Cita obtenerCita(Cita cita) {
+
+        return citas.verificarNumeroCita(cita);
+    }
+
+
+
     // Verifica si es afiliado o no
     public boolean verificarSiEsAfiliado(String cedulaInterfaz){
         return citas.verificarSiEsAfiliado(cedulaInterfaz);
