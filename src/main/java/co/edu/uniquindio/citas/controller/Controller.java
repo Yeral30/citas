@@ -26,8 +26,10 @@ public class Controller {
         return citas.asignarFechaCita(tipoCita);
     }
 
-    // se crea un objeto cita aux para poder mandar la informacion
 
+
+
+    // se crea un objeto cita aux para poder mandar la informacion hasta la clase citas
     public Cita consultarCita(String cedula, TipoCita tipoCita) {
 
         return citas.verificarCita(new Cita(new Paciente("", cedula),tipoCita));

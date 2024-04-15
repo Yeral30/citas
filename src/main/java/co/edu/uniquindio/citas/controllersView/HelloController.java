@@ -210,12 +210,12 @@ public class HelloController implements Initializable {
                 encontroCedula = true;
             } else {
                 mostrarMensaje(Alert.AlertType.WARNING, "La cédula no ha sido encontrada", """
-                    Su cédula no ha sido encontrada,
-                    verifique su cédula o
-                    puede que no esté afiliado.
-                    Comuníquese con nuestra
-                    área de afiliación de Nuevo EPS
-                    a través del número (10080003).""");
+                        Su cédula no ha sido encontrada,
+                        verifique su cédula o
+                        puede que no esté afiliado.
+                        Comuníquese con nuestra
+                        área de afiliación de Nuevo EPS
+                        a través del número (10080003).""");
             }
         }
     }
@@ -228,11 +228,7 @@ public class HelloController implements Initializable {
     //---------------------------------
 
 
-
-
-
     //-----------------------
-
 
 
     private void reOrganizarInterfazSolicitarCita(String cedula, String numCita, LocalDateTime fechaAsignacion) {
@@ -265,14 +261,7 @@ public class HelloController implements Initializable {
         imgRegistro.setLayoutX(101);
 
 
-
-
-
-
     }
-
-
-
 
 
     private boolean validarCamposSolicitarCampos() {
@@ -324,7 +313,7 @@ public class HelloController implements Initializable {
     }
 
 
-  //  ----------------------------------------  tab consultar cita  ---------------------------------------
+    //  ----------------------------------------  tab consultar cita  ---------------------------------------
 
 
     @FXML
@@ -357,21 +346,21 @@ public class HelloController implements Initializable {
     private Pane paneDatos2;
 
 
-
-
-
     @FXML
     private TextField txtIdConsultarCita;
 
 
-
     @FXML
     void aceptarConsultar(ActionEvent event) {
-
-// se manda por parametro el numero de cedula y el tipo de cita para poder consultar
+//se verifica que los campos los esten llenando
         if (txtIdConsultarCita.getText() != null && !txtIdConsultarCita.getText().equals("")) {
+/**
+ *             se manda por parametro el numero de cedula y el tipo de cita para poder consultar y va hasta la clase citas donde esta
+ *             la cola de prioridad y se verifica de que la cita exista ; si existe devulve la cita con la informacion en caso contrario devulve null
+ */
 
             Cita cita = controller.consultarCita(txtIdConsultarCita.getText(), boxTipoCitaConsultarCitas.getValue());
+
             if (cita == null) {
                 JOptionPane.showMessageDialog(null, "no tiene citas pendientes");
             } else {
@@ -380,55 +369,15 @@ public class HelloController implements Initializable {
                         " \nverificamos en el sistema que efectivamente tiene una cita \n el numero de la cita es: " + cita.getNumeroCita()
                         + " la fecha y hora de su cita es: " + cita.getFechaCita());
             }
-        }else {
+        } else {
             JOptionPane.showMessageDialog(null, "Debe de llenar todos los campos");
 
         }
 
     }
+
     @FXML
     private AnchorPane panePrincipalConsultarCita;
-
-
-
-
-    @FXML
-    void dirigirInicioDesdeConsultar(ActionEvent event) {
-        // Restaurar las coordenadas originales de btnVolver
-        btnVolver.setLayoutX(originalX);
-        btnVolver.setLayoutY(originalY);
-
-        TabPane tabPane = tapInicio.getTabPane();
-
-        // Seleccionar la pestaña de inicio
-        if (tabPane != null) {
-            tabPane.getSelectionModel().select(tapInicio);
-        }
-
-        // Remover la pestaña de solicitar cita si existe
-        if (tabPane.getTabs().contains(tapConsultar)) {
-            tabPane.getTabs().remove(tapConsultar);
-        }
-
-        // Verificar si paneAux no es nulo y si no está ya presente en panePaderSolicitarCita
-        if (paneDatosConsultarCita != null && !panePaderConsultarCita.getChildren().contains(paneDatosConsultarCita)) {
-            // Agregar paneAux a panePaderSolicitarCita si no está presente y no es nulo
-            panePaderConsultarCita.getChildren().add(paneDatosConsultarCita);
-        }
-        // Verificar si btnValidar no es nulo y si no está ya presente en panePaderSolicitarCita
-        if (btnAceptarConsultarCita != null && !panePaderConsultarCita.getChildren().contains(btnAceptarConsultarCita)) {
-            // Agregar btnValidar a panePaderSolicitarCita si no está presente y no es nulo
-            panePaderConsultarCita.getChildren().add(btnAceptarConsultarCita);
-        }
-        //vuelven los datos prederteminados
-        lblInformativoG.setText("Ingresa los siguientes datos para agendar tu turno:");
-        imgRegistro.setLayoutY(cordenadasYimg);
-        panePaderConsultarCita.getChildren().remove(labelMensajeG);
-        vaciarCampos();
-
-
-    }
-
 
 
     @FXML
@@ -439,12 +388,11 @@ public class HelloController implements Initializable {
         boxTipoDocumentoConsultarCita.setValue(TipoDocumento.CEDULA_DE_CIUDADANIA);
 
     }
+
     @FXML
     private AnchorPane panePaderConsultarCita;
     @FXML
     private Pane paneDatosConsultarCita;
-
-
 
 
 }

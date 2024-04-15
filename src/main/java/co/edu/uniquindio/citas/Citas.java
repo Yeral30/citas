@@ -109,6 +109,11 @@ public class Citas {
         this.cedulas = cedulas;
     }
 
+    /**
+     * verificamos si la cita existe o no existe 
+     * @param cita
+     * @return
+     */
     public Cita verificarCita(Cita cita) {
 
         Cita citaAux = null;
