@@ -395,4 +395,6 @@ public class HelloController implements Initializable {
     private Pane paneDatosConsultarCita;
 
 
+    public void dirigirInicioDesdeConsultar(ActionEvent event) {
+    }
 }

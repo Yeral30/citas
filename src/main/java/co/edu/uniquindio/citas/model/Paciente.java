@@ -19,4 +19,12 @@ public class Paciente {
     public void setIdentificacion(String identificacion) {
         this.identificacion = identificacion;
     }
+
+    @Override
+    public String toString() {
+        return "Paciente{" +
+                "nombre='" + nombre + '\'' +
+                ", identificacion='" + identificacion + '\'' +
+                '}';
+    }
 }

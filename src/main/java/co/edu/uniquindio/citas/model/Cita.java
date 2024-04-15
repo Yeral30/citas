@@ -65,4 +65,16 @@ public class Cita {
     public LocalDateTime getFechaCita() {
         return fechaCita;
     }
+
+    @Override
+    public String toString() {
+        return "Cita{" +
+                "paciente=" + paciente +
+                ", numeroCita='" + numeroCita + '\'' +
+                ", fechaCita=" + fechaCita +
+                ", tipoCita=" + tipoCita +
+                ", prioridad=" + prioridad +
+                '}';
+    }
+
 }

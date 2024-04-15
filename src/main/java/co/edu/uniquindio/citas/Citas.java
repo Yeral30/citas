@@ -72,6 +72,12 @@ public class Citas {
         Cita nuevaCita = new Cita(paciente, tipoCita, numeroCita, fechaAsignacion);
         colaDeCitas.add(nuevaCita);
 
+        Iterator <Cita> iterator= colaDeCitas.iterator();
+        while (iterator.hasNext()){
+            Cita c= iterator.next();
+            System.out.println(c.toString());
+        }
+
         return numeroCita;
     }
 
