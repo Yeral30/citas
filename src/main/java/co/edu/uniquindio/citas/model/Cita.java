@@ -24,6 +24,10 @@ public class Cita {
         this.prioridad = tipoCita.getPrioridad();
 
     }
+    public Cita (Paciente paciente,TipoCita tipoCita){
+        this.paciente = paciente;
+        this.tipoCita = tipoCita;
+    }
 
 
     public Paciente getPaciente() {
@@ -56,5 +60,9 @@ public class Cita {
 
     public void setPrioridad(Prioridad prioridad) {
         this.prioridad = prioridad;
+    }
+
+    public LocalDateTime getFechaCita() {
+        return fechaCita;
     }
 }

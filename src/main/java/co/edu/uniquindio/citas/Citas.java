@@ -13,9 +13,9 @@ import java.util.*;
 
 public class Citas {
     private String numeroCita;
-    private int numeroMedicoGeneral = 0;
-    private int numeroCirugiaProgramada = 0;
-    private int numeroUrgencia = 0;
+    private int numeroMedicoGeneral = 1;
+    private int numeroCirugiaProgramada = 1;
+    private int numeroUrgencia = 1;
     private LocalDateTime fechaAsignacionGeneral = LocalDateTime.now();
     ;
     private LocalDateTime fechaAsignacionProgramadas = LocalDateTime.now();
@@ -35,6 +35,7 @@ public class Citas {
             return c2.getPrioridad().compareTo(c1.getPrioridad());
         }
     });
+
     public ArrayList<String> cargarCedula() {
         cedulas.add("123");
         cedulas.add("12");
@@ -73,6 +74,7 @@ public class Citas {
 
         return numeroCita;
     }
+
     private String calcularNumeroCita(TipoCita tipoCita) {
         String numeroCita = "";
         if (tipoCita.getPrioridad() == Prioridad.ALTA) {
@@ -88,20 +90,41 @@ public class Citas {
     //asignacion fecha
     public LocalDateTime asignarFechaCita(TipoCita tipoCita) {
         if (tipoCita.getPrioridad().compareTo(Prioridad.ALTA) == 0) {
-            fechaAsignacionUrgencias=incrementarHora(fechaAsignacionUrgencias,30);
+            fechaAsignacionUrgencias = incrementarHora(fechaAsignacionUrgencias, 30);
             return fechaAsignacionUrgencias;
         } else if (tipoCita.getPrioridad().compareTo(Prioridad.MEDIA) == 0) {
-            fechaAsignacionProgramadas=incrementarHora(fechaAsignacionProgramadas,25);
+            fechaAsignacionProgramadas = incrementarHora(fechaAsignacionProgramadas, 25);
             return fechaAsignacionProgramadas;
         } else {
-            fechaAsignacionGeneral=incrementarHora(fechaAsignacionGeneral,10);
+            fechaAsignacionGeneral = incrementarHora(fechaAsignacionGeneral, 10);
             return fechaAsignacionGeneral;
         }
     }
-    private  LocalDateTime incrementarHora(LocalDateTime fecha, int minutos) {
+
+    private LocalDateTime incrementarHora(LocalDateTime fecha, int minutos) {
         return fecha.plusMinutes(minutos);
     }
+
     public void setCedulas(ArrayList<String> cedulas) {
         this.cedulas = cedulas;
     }
+
+    public Cita verificarCita(Cita cita) {
+
+        Cita citaAux = null;
+        Iterator<Cita> iterator = colaDeCitas.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(cita.getPaciente().getNombre());
+            Cita c = iterator.next();
+            if (c.getTipoCita().compareTo(cita.getTipoCita()) == 0) {
+                if (c.getPaciente().getIdentificacion().compareTo(cita.getPaciente().getIdentificacion())==0){
+                    citaAux=c;
+                }
+            }
+        }
+        return citaAux;
+
+    }
+
+
 }

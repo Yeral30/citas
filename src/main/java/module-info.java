@@ -1,6 +1,8 @@
 module co.edu.uniquindio.citas {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.mail;
+    requires java.desktop;
 
 
     opens co.edu.uniquindio.citas to javafx.fxml;

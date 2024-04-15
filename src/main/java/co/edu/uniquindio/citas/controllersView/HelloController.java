@@ -1,30 +1,23 @@
 package co.edu.uniquindio.citas.controllersView;
 
-import co.edu.uniquindio.citas.Citas;
 import co.edu.uniquindio.citas.controller.Controller;
 import co.edu.uniquindio.citas.model.Cita;
-import co.edu.uniquindio.citas.model.Paciente;
 import co.edu.uniquindio.citas.model.enumeraciones.TipoCita;
-import javafx.animation.Animation;
-import javafx.animation.ParallelTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.Transition;
+import co.edu.uniquindio.citas.model.enumeraciones.TipoDocumento;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.util.Duration;
 
+import javax.swing.*;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class HelloController implements Initializable {
@@ -318,12 +311,140 @@ public class HelloController implements Initializable {
         originalY = btnVolver.getLayoutY();
 
         ObservableList<TipoCita> tiposCitaList = FXCollections.observableArrayList(TipoCita.values());
+        ObservableList<TipoDocumento> tiposDocumentoList = FXCollections.observableArrayList(TipoDocumento.values());
         boxTipoCita.setItems(tiposCitaList);
+        boxTipoCitaConsultarCitas.setItems(tiposCitaList);
+        boxTipoDocumentoConsultarCita.setItems(tiposDocumentoList);
         // Establecer una opción predeterminada
         boxTipoCita.setValue(TipoCita.MEDICO_GENERAL);
+        boxTipoDocumentoConsultarCita.setValue(TipoDocumento.CEDULA_DE_CIUDADANIA);
+        boxTipoCitaConsultarCitas.setValue(TipoCita.MEDICO_GENERAL);
 
 
     }
+
+
+  //  ----------------------------------------  tab consultar cita  ---------------------------------------
+
+
+    @FXML
+    private ChoiceBox<TipoCita> boxTipoCitaConsultarCitas;
+
+    @FXML
+    private ChoiceBox<TipoDocumento> boxTipoDocumentoConsultarCita;
+
+    @FXML
+    private Button btnAceptarConsultarCita;
+
+
+    @FXML
+    private Button btnLimpiarCamposConsultarCita;
+
+
+    @FXML
+    private Button btnVolverConsultarCita;
+
+
+    @FXML
+    private ImageView imgRegistro2;
+
+
+    @FXML
+    private Label lblInformativoG2;
+
+
+    @FXML
+    private Pane paneDatos2;
+
+
+
+
+
+    @FXML
+    private TextField txtIdConsultarCita;
+
+
+
+    @FXML
+    void aceptarConsultar(ActionEvent event) {
+
+// se manda por parametro el numero de cedula y el tipo de cita para poder consultar
+        if (txtIdConsultarCita.getText() != null && !txtIdConsultarCita.getText().equals("")) {
+
+            Cita cita = controller.consultarCita(txtIdConsultarCita.getText(), boxTipoCitaConsultarCitas.getValue());
+            if (cita == null) {
+                JOptionPane.showMessageDialog(null, "no tiene citas pendientes");
+            } else {
+                JOptionPane.showMessageDialog(null, "Señ@r " + cita.getPaciente().getNombre() + " con numero de cedula " +
+                        cita.getPaciente().getIdentificacion() +
+                        " \nverificamos en el sistema que efectivamente tiene una cita \n el numero de la cita es: " + cita.getNumeroCita()
+                        + " la fecha y hora de su cita es: " + cita.getFechaCita());
+            }
+        }else {
+            JOptionPane.showMessageDialog(null, "Debe de llenar todos los campos");
+
+        }
+
+    }
+    @FXML
+    private AnchorPane panePrincipalConsultarCita;
+
+
+
+
+    @FXML
+    void dirigirInicioDesdeConsultar(ActionEvent event) {
+        // Restaurar las coordenadas originales de btnVolver
+        btnVolver.setLayoutX(originalX);
+        btnVolver.setLayoutY(originalY);
+
+        TabPane tabPane = tapInicio.getTabPane();
+
+        // Seleccionar la pestaña de inicio
+        if (tabPane != null) {
+            tabPane.getSelectionModel().select(tapInicio);
+        }
+
+        // Remover la pestaña de solicitar cita si existe
+        if (tabPane.getTabs().contains(tapConsultar)) {
+            tabPane.getTabs().remove(tapConsultar);
+        }
+
+        // Verificar si paneAux no es nulo y si no está ya presente en panePaderSolicitarCita
+        if (paneDatosConsultarCita != null && !panePaderConsultarCita.getChildren().contains(paneDatosConsultarCita)) {
+            // Agregar paneAux a panePaderSolicitarCita si no está presente y no es nulo
+            panePaderConsultarCita.getChildren().add(paneDatosConsultarCita);
+        }
+        // Verificar si btnValidar no es nulo y si no está ya presente en panePaderSolicitarCita
+        if (btnAceptarConsultarCita != null && !panePaderConsultarCita.getChildren().contains(btnAceptarConsultarCita)) {
+            // Agregar btnValidar a panePaderSolicitarCita si no está presente y no es nulo
+            panePaderConsultarCita.getChildren().add(btnAceptarConsultarCita);
+        }
+        //vuelven los datos prederteminados
+        lblInformativoG.setText("Ingresa los siguientes datos para agendar tu turno:");
+        imgRegistro.setLayoutY(cordenadasYimg);
+        panePaderConsultarCita.getChildren().remove(labelMensajeG);
+        vaciarCampos();
+
+
+    }
+
+
+
+    @FXML
+    void limpiarCamposConsultar(ActionEvent event) {
+
+        txtIdConsultarCita.setText("");
+        boxTipoCitaConsultarCitas.setValue(TipoCita.MEDICO_GENERAL);
+        boxTipoDocumentoConsultarCita.setValue(TipoDocumento.CEDULA_DE_CIUDADANIA);
+
+    }
+    @FXML
+    private AnchorPane panePaderConsultarCita;
+    @FXML
+    private Pane paneDatosConsultarCita;
+
+
 
 
 }
