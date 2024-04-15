@@ -212,7 +212,7 @@
                                           </Label>
                                           <Button fx:id="btnAceptarConsultarCita" layoutX="10.0" layoutY="294.0" mnemonicParsing="false" onAction="#aceptarConsultar" prefHeight="25.0" prefWidth="190.0" text="Aceptar ➔" />
                                           <Button fx:id="btnLimpiarCamposConsultarCita" layoutX="248.0" layoutY="294.0" mnemonicParsing="false" onAction="#limpiarCamposConsultar" prefHeight="25.0" prefWidth="190.0" text="Limpiar campos ➔" />
-                                          <Button fx:id="btnVolverConsultarCita" layoutX="481.0" layoutY="294.0" mnemonicParsing="false" onAction="#dirigirInicioDesdeConsultar" prefHeight="25.0" prefWidth="190.0" text="Volver ➔" />
+                                          <Button fx:id="btnVolverConsultarCita" layoutX="481.0" layoutY="294.0" mnemonicParsing="false" onAction="#dirigirInicioDesdeConsultar" prefHeight="25.0" prefWidth="190.0" stylesheets="@Style/Style.css" text="Volver ➔" />
                                        </children>
                                     </Pane>
                                  </children>

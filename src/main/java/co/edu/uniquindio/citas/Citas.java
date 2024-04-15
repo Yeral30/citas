@@ -110,7 +110,7 @@ public class Citas {
     }
 
     /**
-     * verificamos si la cita existe o no existe 
+     * verificamos si la cita existe o no existe
      * @param cita
      * @return
      */

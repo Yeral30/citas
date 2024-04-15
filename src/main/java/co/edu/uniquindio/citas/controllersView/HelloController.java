@@ -394,5 +394,42 @@ public class HelloController implements Initializable {
     @FXML
     private Pane paneDatosConsultarCita;
 
+    @FXML
+    void dirigirInicioDesdeConsultar(ActionEvent event) {
+        // Restaurar las coordenadas originales de btnVolver
+        btnVolverConsultarCita.setLayoutX(originalX);
+        btnVolverConsultarCita.setLayoutY(originalY);
+
+        TabPane tabPane = tapInicio.getTabPane();
+
+        // Seleccionar la pestaña de inicio
+        if (tabPane != null) {
+            tabPane.getSelectionModel().select(tapInicio);
+        }
+
+        // Remover la pestaña de solicitar cita si existe
+        if (tabPane.getTabs().contains(tapConsultar)) {
+            tabPane.getTabs().remove(tapConsultar);
+        }
+
+        // Verificar si paneAux no es nulo y si no está ya presente en panePaderSolicitarCita
+        if (paneDatosConsultarCita != null && !panePaderConsultarCita.getChildren().contains(paneDatosConsultarCita)) {
+            // Agregar paneAux a panePaderSolicitarCita si no está presente y no es nulo
+            panePaderConsultarCita.getChildren().add(paneDatosConsultarCita);
+        }
+        // Verificar si btnValidar no es nulo y si no está ya presente en panePaderSolicitarCita
+        if (btnAceptarConsultarCita != null && !panePaderConsultarCita.getChildren().contains(btnAceptarConsultarCita)) {
+            // Agregar btnValidar a panePaderSolicitarCita si no está presente y no es nulo
+            panePaderConsultarCita.getChildren().add(btnAceptarConsultarCita);
+        }
+        //vuelven los datos prederteminados
+        lblInformativoG.setText("Ingresa los siguientes datos para agendar tu turno:");
+        imgRegistro.setLayoutY(cordenadasYimg);
+        panePaderConsultarCita.getChildren().remove(labelMensajeG);
+        vaciarCampos();
+
+
+    }
+
 
 }
