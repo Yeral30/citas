@@ -159,6 +159,13 @@ public class Citas {
         return citaAux;
 
     }
+    public void imprimirCitas() {
+        Iterator<Cita> iterator = colaDeCitas.iterator();
+        while (iterator.hasNext()) {
+            Cita c = iterator.next();
+            System.out.println(c.toString());
+        }
+    }
 
 
     public boolean EliminarCita(Cita cita) {

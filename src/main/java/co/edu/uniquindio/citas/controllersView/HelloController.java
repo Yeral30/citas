@@ -2,6 +2,7 @@ package co.edu.uniquindio.citas.controllersView;
 
 import co.edu.uniquindio.citas.controller.Controller;
 import co.edu.uniquindio.citas.model.Cita;
+import co.edu.uniquindio.citas.model.Fecha;
 import co.edu.uniquindio.citas.model.Paciente;
 import co.edu.uniquindio.citas.model.enumeraciones.TipoCita;
 import co.edu.uniquindio.citas.model.enumeraciones.TipoDocumento;
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -111,8 +113,7 @@ public class HelloController implements Initializable {
     private double cordenadasYimg;
 
 
-    private LocalDateTime fechaAsignacion;
-    private List<LocalDate> fechasDisponibles;
+    private List<LocalDate> fechasSeleccionadas;
     private List<String> horasDisponibles;
 
 
@@ -224,9 +225,28 @@ public class HelloController implements Initializable {
     void validarA(ActionEvent event) {
 
         if (validarCamposSolicitarCampos()) {
-
             btnModificarCalendario.setVisible(false);
-            dirigirCalendario();
+            if (controller.verificarSiEsAfiliado(txtIdA.getText())) {
+                if (boxTipoCita.getValue().equals(TipoCita.URGENCIA)) {
+                    LocalDateTime fechaCita = controller.asignarFechaCita(TipoCita.URGENCIA);
+                    Cita cita = controller.asignarCita(boxTipoCita.getValue(), txtNombreA.getText(), txtIdA.getText(), fechaCita);
+                    reOrganizarInterfazSolicitarCita(cita.getPaciente().getIdentificacion(), cita.getNumeroCita(), cita.getFechaCita());
+                    controller.imprirCitas();
+                    System.out.println("-----------------------------");
+                    if (!tabPane.getTabs().contains(tapSolicitarCita)) {
+                        tabPane.getTabs().add(tapSolicitarCita);
+                    }
+                    TabPane tabPane = tapSolicitarCita.getTabPane();
+
+                    //sirve para pasar al tap solicitarCita
+                    if (tabPane != null) {
+                        tabPane.getSelectionModel().select(tapSolicitarCita);
+                    }
+
+                } else {
+                    dirigirCalendario();
+                }
+            }
         } else {
             mostrarMensaje(Alert.AlertType.WARNING, "La cédula no ha sido encontrada", """
                     Su cédula no ha sido encontrada,
@@ -248,12 +268,14 @@ public class HelloController implements Initializable {
         LocalDate fechaSeleccionada = dateCalendario.getValue();// Asegúrate de que boxTipoCita está correctamente inicializado
         String horaSeleccionada = boxHoras.getValue();
         if (horaSeleccionada != null && fechaSeleccionada != null) {
-        int solaHora= Integer.parseInt(horaSeleccionada.substring(0,2));
-        LocalDateTime nuevaFecha=fechaSeleccionada.atTime(solaHora,0);
-
-        infoModificar(nuevaFecha);
-        btnAceptarCalendario.setVisible(true);
-        limpiarCamposCancelar();
+            int solaHora = Integer.parseInt(horaSeleccionada.substring(0, 2));
+            LocalDateTime nuevaFecha = fechaSeleccionada.atTime(solaHora, 0);
+            String horaAnterior = String.valueOf(citaAux.getFechaCita()).substring(String.valueOf(citaAux.getFechaCita()).indexOf('T') + 1);
+            System.out.println(horaAnterior);
+            restablecerFechaCambioCita(fechaSeleccionada, horaAnterior);
+                infoModificar(horaSeleccionada,fechaSeleccionada,nuevaFecha);
+            btnAceptarCalendario.setVisible(true);
+            limpiarCamposCancelar();
             if (!tabPane.getTabs().contains(tapCancelarModificar)) {
                 tabPane.getTabs().add(tapCancelarModificar);
             }
@@ -262,16 +284,34 @@ public class HelloController implements Initializable {
             //sirve para pasar al tap solicitarCita
             if (tabPane != null) {
                 tabPane.getSelectionModel().select(tapCancelarModificar);
-                JOptionPane.showMessageDialog(null,"La fecha de la cita a sido modificada con exito.");
+                JOptionPane.showMessageDialog(null, "La fecha de la cita a sido modificada con exito.");
             }
-}
+        }
 
     }
 
-    private LocalDateTime infoModificar(LocalDateTime nuevaFecha) {
+    private LocalDateTime infoModificar(String  horaSeleccionada,LocalDate fecha,LocalDateTime fechaNueva) {
+        this.citaAux.setFechaCita(fechaNueva);
+        for (int i = 0; i <  listFechas.size(); i++) {
+            if(listFechas.get(i).getDia().equals(fecha)){
+                listFechas.get(i).eliminarFecha(horaSeleccionada);
+                break;
+            }
+        }
 
-        this.citaAux.setFechaCita(nuevaFecha);
-        return nuevaFecha;
+        return fechaNueva;
+    }
+    private void restablecerFechaCambioCita(LocalDate fecha, String hora){
+
+        for (int i = 0; i <  listFechas.size(); i++) {
+            if(listFechas.get(i).getDia().equals(fecha)){
+                listFechas.get(i).añadirHora(hora);
+                break;
+            }
+        }
+
+
+
     }
 
 
@@ -291,9 +331,9 @@ public class HelloController implements Initializable {
             Cita cita = controller.asignarCita(tipoCita, nombre, cedula, fecha);
             // reOrganizarInterfazSolicitarCita puede actualizarse para manejar el display de la información
             reOrganizarInterfazSolicitarCita(cedula, cita.getNumeroCita(), cita.getFechaCita());
-            encontroCedula = true;
+            boxHoras.getSelectionModel().clearSelection();
             actualizarListasDespuesDeSeleccion(fechaSeleccionada, horaSeleccionada);
-
+            encontroCedula = true;
             if (!tabPane.getTabs().contains(tapSolicitarCita)) {
                 tabPane.getTabs().add(tapSolicitarCita);
             }
@@ -305,7 +345,10 @@ public class HelloController implements Initializable {
             }
 
         }
+        controller.imprirCitas();
+        System.out.println("-----------------------------");
         btnModificarCalendario.setVisible(true);
+
 
     }
 
@@ -318,7 +361,7 @@ public class HelloController implements Initializable {
 
 
     //-----------------------
-
+    private List<Fecha> listFechas;
 
     private void reOrganizarInterfazSolicitarCita(String cedula, String numCita, LocalDateTime fechaAsignacion) {
         //se guardan las coordenadas del pane
@@ -384,8 +427,9 @@ public class HelloController implements Initializable {
         tabPane.getTabs().remove(tapCancelarModificar);
         tabPane.getTabs().remove(tapConsultar);
         tabPane.getTabs().remove(tapCalendario);
-        boxHoras.setValue("06:00");
+
         dateCalendario.setValue(LocalDate.now());
+        listFechas = new ArrayList<>();
         //--------------------------------------
         // Establecer una fecha inicial predeterminada
         dateCalendario.setValue(LocalDate.now());
@@ -393,18 +437,6 @@ public class HelloController implements Initializable {
         // Configurar el DatePicker para que muestre el calendario directamente
         dateCalendario.setEditable(false); // Deshabilita la edición del campo de texto
 
-//----------------horas------------------------
-        inicializarFechasYHorasDisponibles();
-
-        dateCalendario.setDayCellFactory(param -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                setDisable(!fechasDisponibles.contains(item));
-            }
-        });
-
-        boxHoras.setItems(FXCollections.observableArrayList(horasDisponibles));
 
 //------------------------------------------
         originalX = btnVolver.getLayoutX();
@@ -426,32 +458,80 @@ public class HelloController implements Initializable {
         boxTipoProcedimientoCancelar1.setItems(tiposProcedimientoList);
 
 
-    }
+        // Obtener el último día del año actual
+        LocalDate lastDayOfYear = LocalDate.now().with(TemporalAdjusters.lastDayOfYear());
 
-    private void inicializarFechasYHorasDisponibles() {
-        fechasDisponibles = new ArrayList<>();
-        horasDisponibles = new ArrayList<>();
-        LocalDate fechaActual = LocalDate.now();
-        for (int i = 0; i < 7; i++) {
-            fechasDisponibles.add(fechaActual.plusDays(i));
-        }
-        for (int hora = 6; hora <= 18; hora++) {
-            horasDisponibles.add(String.format("%02d:00", hora));
-        }
+        // Establecer la fecha máxima como el último día del año actual
+        dateCalendario.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.isAfter(lastDayOfYear));
+            }
+        });
+        // Establecer la fecha mínima como la fecha actual
+        dateCalendario.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.isBefore(LocalDate.now()) || date.getYear() != LocalDate.now().getYear());
+            }
+        });
+
+
+
+
     }
 
 
     private void actualizarListasDespuesDeSeleccion(LocalDate fechaSeleccionada, String horaSeleccionada) {
-        fechasDisponibles.remove(fechaSeleccionada);
-        horasDisponibles.remove(horaSeleccionada);
-        dateCalendario.setDayCellFactory(param -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                setDisable(!fechasDisponibles.contains(item));
+        ArrayList<String> horasDisponibles = new ArrayList<>();
+        boolean bandera = true;
+
+        for (int i = 0; i < listFechas.size(); i++) {
+            if (listFechas.get(i).getDia().equals(fechaSeleccionada)) {
+                horasDisponibles = listFechas.get(i).eliminarFecha(horaSeleccionada);
+                bandera = false; // es porque existe la fecha;
+                break;
             }
-        });
+        }
+        if (bandera) {
+            Fecha fecha = new Fecha(fechaSeleccionada);
+            horasDisponibles = fecha.eliminarFecha(horaSeleccionada);
+            listFechas.add(fecha);
+        }
+
+
+
+
+    }
+
+    @FXML
+    private Button btnreFrescarCalendario;
+
+    @FXML
+    void refrescarHoras(ActionEvent event) {
+        ArrayList<String> horasDisponibles = new ArrayList<>();
+        boolean bandera = true;
+        for (int i = 0; i < listFechas.size(); i++) {
+            if (listFechas.get(i).getDia().equals(dateCalendario.getValue())) {
+                horasDisponibles = listFechas.get(i).getListaHoras();
+                bandera = false; // es porque existe la fecha;
+                break;
+            }
+        }
+        if (bandera) {
+            Fecha fecha = new Fecha(dateCalendario.getValue());
+            listFechas.add(fecha);
+            for (int i = 0; i < listFechas.size(); i++) {
+                if (listFechas.get(i).getDia().equals(dateCalendario.getValue())) {
+                    horasDisponibles = listFechas.get(i).getListaHoras();
+                    break;
+                }
+            }
+        }
         boxHoras.setItems(FXCollections.observableArrayList(horasDisponibles));
+
+
     }
 
 
@@ -691,6 +771,7 @@ public class HelloController implements Initializable {
     private void limpiarCampos() {
         txtIdConsultarCita.setText((""));
     }
+
     Cita citaAux;
 
     @FXML
@@ -699,8 +780,6 @@ public class HelloController implements Initializable {
         TipoCita tipoCita;
         String id = txtIdCancelar.getText();
         String numeroCita = txtNumeroCitaCancelar.getText().toUpperCase();
-
-
 
 
         if (verificarCamposCancelar()) {
@@ -713,26 +792,26 @@ public class HelloController implements Initializable {
             } else {
                 tipoCita = TipoCita.MEDICO_GENERAL;
             }
-            if(boxTipoProcedimientoCancelar1.getValue().compareTo(TipoProcedimiento.MODIFICAR)==0){
-            cita = controller.obtenerCita(new Cita(new Paciente("", id), tipoCita, numeroCita, null));
-            if (cita == null) {
-                JOptionPane.showMessageDialog(null, "Usted no tiene citas pendientes");
+            if (boxTipoProcedimientoCancelar1.getValue().compareTo(TipoProcedimiento.MODIFICAR) == 0) {
+                cita = controller.obtenerCita(new Cita(new Paciente("", id), tipoCita, numeroCita, null));
+                if (cita == null) {
+                    JOptionPane.showMessageDialog(null, "Usted no tiene citas pendientes");
+                } else {
+                    this.citaAux = cita;
+                    dirigirCalendario2();
+
+                }
+
             } else {
-                this.citaAux = cita;
-                dirigirCalendario2();
 
-            }
-
-            }else {
-                 boolean bandera= controller.obtenerCita2(new Cita(new Paciente("", id), tipoCita, numeroCita, null));
-
-                 if (bandera){
-                     JOptionPane.showMessageDialog(null, "Su cita fue cancelada con exito");
-                 }else{
-                     JOptionPane.showMessageDialog(null, "No fue posible cancelar su cita");
+                boolean bandera = controller.obtenerCita2(new Cita(new Paciente("", id), tipoCita, numeroCita, null));
+                if (bandera) {
+                    JOptionPane.showMessageDialog(null, "Su cita fue cancelada con exito");
+                } else {
+                    JOptionPane.showMessageDialog(null, "No fue posible cancelar su cita");
 
 
-                 }
+                }
 
             }
         } else {
@@ -760,8 +839,7 @@ public class HelloController implements Initializable {
         limpiarCamposCancelar();
 
 
-        btnVolverCancelar.setLayoutX(originalX);
-        btnVolverCancelar.setLayoutY(originalY);
+
         TabPane tabPane = tapInicio.getTabPane();
 
         // Seleccionar la pestaña de inicio
@@ -773,7 +851,8 @@ public class HelloController implements Initializable {
         if (tabPane.getTabs().contains(tapCancelarModificar)) {
             tabPane.getTabs().remove(tapCancelarModificar);
 
-        } if (tabPane.getTabs().contains(tapCalendario)) {
+        }
+        if (tabPane.getTabs().contains(tapCalendario)) {
             tabPane.getTabs().remove(tapCalendario);
 
         }
@@ -802,6 +881,7 @@ public class HelloController implements Initializable {
         txtNumeroCitaCancelar.setText("");
         txtIdCancelar.setText("");
     }
+
     @FXML
     private ChoiceBox<TipoProcedimiento> boxTipoProcedimientoCancelar1;
 

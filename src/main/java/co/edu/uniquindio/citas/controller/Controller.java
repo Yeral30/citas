@@ -20,6 +20,9 @@ public class Controller {
             return citas.EliminarCita(cita);
         }
 
+        public void imprirCitas(){
+        citas.imprimirCitas();
+        }
 
     // Verifica si es afiliado o no
     public boolean verificarSiEsAfiliado(String cedulaInterfaz){

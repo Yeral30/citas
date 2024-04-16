@@ -5,7 +5,7 @@
 #paneOpciones{
 
 }
-#panePrincipal,#panePaderSolicitarCita{
+#panePrincipal,#panePaderSolicitarCita,#paneDatosConsultarCita1,#paneDatosConsultarCita,#paneDatosCancelar{
     -fx-background-color: white; /* Color de fondo del Pane */
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 20, 0, 0, 0); /* Efecto de sombra */
 
