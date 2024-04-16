@@ -208,15 +208,21 @@
                                              </font>
                                           </Label>
                                           <TextField fx:id="txtNumeroCitaCancelar" layoutX="94.0" layoutY="194.0" prefWidth="190.0" />
+                                          <ChoiceBox fx:id="boxTipoProcedimientoCancelar1" layoutX="386.0" layoutY="193.0" prefHeight="27.0" prefWidth="190.0" />
+                                          <Label layoutX="386.0" layoutY="154.0" text="Tipo de procedimiento: *">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
                                        </children>
                                     </Pane>
-                                    <Button fx:id="btnAceptarCancelar" layoutX="420.0" layoutY="337.0" mnemonicParsing="false" onAction="#aceptarCancelar" prefHeight="25.0" prefWidth="190.0" text="Aceptar ➔" />
-                                    <Button fx:id="btnVolverCancelar" layoutX="112.0" layoutY="337.0" mnemonicParsing="false" onAction="#dirigirInicioDesdeCancelar" prefHeight="25.0" prefWidth="190.0" stylesheets="@Style/Style.css" text="Volver ➔" />
+                                    <Button fx:id="btnVolverCancelar" layoutX="402.0" layoutY="337.0" mnemonicParsing="false" onAction="#dirigirInicioDesdeCancelar" prefHeight="25.0" prefWidth="190.0" stylesheets="@Style/Style.css" text="Volver ➔" />
                                     <Label fx:id="lblInformativoG2111" layoutX="219.0" layoutY="30.0" prefHeight="32.0" prefWidth="489.0" text="cancelar o modificar tu cita">
                                        <font>
                                           <Font size="22.0" />
                                        </font>
                                     </Label>
+                                    <Button fx:id="btnAceptarCancelar" layoutX="112.0" layoutY="337.0" mnemonicParsing="false" onAction="#aceptarCancelar" prefHeight="25.0" prefWidth="190.0" text="Aceptar ➔" />
                                  </children>
                               </AnchorPane>
                               <Label layoutX="30.0" layoutY="25.0" text="Nue" textFill="#39b7dd">
@@ -292,6 +298,12 @@
                                                 <Font size="15.0" />
                                              </font>
                                           </Label>
+                                          <TextField fx:id="txtNumeroCitaConsultar" layoutX="386.0" layoutY="194.0" prefWidth="190.0" />
+                                          <Label layoutX="386.0" layoutY="154.0" text="Numero de cita:  *">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
                                        </children>
                                     </Pane>
                                     <Button fx:id="btnAceptarConsultarCita" layoutX="112.0" layoutY="337.0" mnemonicParsing="false" onAction="#aceptarConsultar" prefHeight="25.0" prefWidth="190.0" text="Aceptar ➔" />
@@ -353,8 +365,11 @@
                                                 <Font size="16.0" />
                                              </font>
                                           </Label>
-                                          <DatePicker fx:id="dateCalendario" layoutX="30.0" layoutY="76.0" />
-                                          <ComboBox fx:id="boxHoras" layoutX="416.0" layoutY="76.0" prefWidth="189.0" />
+                                          <DatePicker fx:id="dateCalendario" layoutX="24.0" layoutY="101.0" />
+                                          <ComboBox fx:id="boxHoras" layoutX="411.0" layoutY="101.0" prefWidth="189.0" />
+                                          <Button fx:id="btnModificarCalendario" layoutX="8.0" layoutY="250.0" mnemonicParsing="false" onAction="#modificarCalendario" prefHeight="25.0" prefWidth="190.0" text="Modificar ➔" />
+                                          <Label layoutX="24.0" layoutY="68.0" prefHeight="17.0" prefWidth="68.0" text="Fecha: *" />
+                                          <Label layoutX="411.0" layoutY="60.0" prefHeight="17.0" prefWidth="68.0" text="Hora: *" />
                                        </children>
                                     </Pane>
                                     <Button fx:id="btnAceptarCalendario" layoutX="264.0" layoutY="321.0" mnemonicParsing="false" onAction="#aceptarCalendario" prefHeight="25.0" prefWidth="190.0" text="Aceptar ➔" />

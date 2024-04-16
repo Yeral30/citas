@@ -21,9 +21,7 @@ public class Citas {
     ;
     private ArrayList<String> cedulas = new ArrayList<>();
 
-    private ArrayList<LocalDateTime>fechas= new ArrayList<>();
-
-
+    private ArrayList<LocalDateTime> fechas = new ArrayList<>();
 
 
     public ArrayList<String> getCedulas() {
@@ -72,11 +70,10 @@ public class Citas {
     }
 
 
-
-    public Cita CreasCita(TipoCita tipoCita,String id, String nombre, LocalDateTime fecha){
-        Cita cita= new Cita(new Paciente(nombre,id),tipoCita,asignarNumeroCita(tipoCita),fecha);
+    public Cita CreasCita(TipoCita tipoCita, String id, String nombre, LocalDateTime fecha) {
+        Cita cita = new Cita(new Paciente(nombre, id), tipoCita, asignarNumeroCita(tipoCita), fecha);
         colaDeCitas.add(cita);
-        return  cita;
+        return cita;
     }
 
     private String calcularNumeroCita(TipoCita tipoCita) {
@@ -105,7 +102,7 @@ public class Citas {
         }
     }
 
-    public void obtenerFecha(LocalDateTime asignacion){
+    public void obtenerFecha(LocalDateTime asignacion) {
         fechas.add(asignacion);
 
     }
@@ -120,6 +117,7 @@ public class Citas {
 
     /**
      * verificamos si la cita existe o no existe
+     *
      * @param cita
      * @return
      */
@@ -131,14 +129,15 @@ public class Citas {
             System.out.println(cita.getPaciente().getNombre());
             Cita c = iterator.next();
             if (c.getTipoCita().compareTo(cita.getTipoCita()) == 0) {
-                if (c.getPaciente().getIdentificacion().compareTo(cita.getPaciente().getIdentificacion())==0){
-                    citaAux=c;
+                if (c.getPaciente().getIdentificacion().compareTo(cita.getPaciente().getIdentificacion()) == 0) {
+                    citaAux = c;
                 }
             }
         }
         return citaAux;
 
     }
+
     public Cita verificarNumeroCita(Cita cita) {
 
         Cita citaAux = null;
@@ -147,13 +146,10 @@ public class Citas {
             System.out.println(cita.getPaciente().getNombre());
             Cita c = iterator.next();
             if (c.getTipoCita().compareTo(cita.getTipoCita()) == 0) {
-                System.out.println("condicion1");
-                if (c.getPaciente().getIdentificacion().compareTo(cita.getPaciente().getIdentificacion())==0){
-                    System.out.println("condicion2");
+                if (c.getPaciente().getIdentificacion().compareTo(cita.getPaciente().getIdentificacion()) == 0) {
 
-                   if (c.getNumeroCita().compareTo(cita.getNumeroCita())==0){
-                       System.out.println("condicion3");
-                      citaAux=c;
+                    if (c.getNumeroCita().compareTo(cita.getNumeroCita()) == 0) {
+                        citaAux = c;
 
 
                     }
@@ -165,4 +161,28 @@ public class Citas {
     }
 
 
+    public boolean EliminarCita(Cita cita) {
+        boolean bandera = false;
+
+        Cita citaAux = null;
+        Iterator<Cita> iterator = colaDeCitas.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(cita.getPaciente().getNombre());
+            Cita c = iterator.next();
+            if (c.getTipoCita().compareTo(cita.getTipoCita()) == 0) {
+                if (c.getPaciente().getIdentificacion().compareTo(cita.getPaciente().getIdentificacion()) == 0) {
+
+                    if (c.getNumeroCita().compareTo(cita.getNumeroCita()) == 0) {
+                        citaAux = c;
+                        colaDeCitas.remove(citaAux);
+                        bandera = true;
+
+
+                    }
+                }
+            }
+
+        }
+        return bandera;
+    }
 }

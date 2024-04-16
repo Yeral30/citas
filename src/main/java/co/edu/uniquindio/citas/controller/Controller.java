@@ -15,6 +15,10 @@ public class Controller {
         return citas.verificarNumeroCita(cita);
     }
 
+        public  boolean obtenerCita2(Cita cita) {
+
+            return citas.EliminarCita(cita);
+        }
 
 
     // Verifica si es afiliado o no
@@ -37,9 +41,9 @@ public class Controller {
 
 
     // se crea un objeto cita aux para poder mandar la informacion hasta la clase citas
-    public Cita consultarCita(String cedula, TipoCita tipoCita) {
+    public Cita consultarCita(Cita cita) {
 
-        return citas.verificarCita(new Cita(new Paciente("", cedula),tipoCita));
+        return citas.verificarNumeroCita(cita);
     }
 }
 

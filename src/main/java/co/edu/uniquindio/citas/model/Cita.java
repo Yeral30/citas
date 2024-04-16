@@ -66,6 +66,10 @@ public class Cita {
         return fechaCita;
     }
 
+    public void setFechaCita(LocalDateTime fechaCita) {
+        this.fechaCita = fechaCita;
+    }
+
     @Override
     public String toString() {
         return "Cita{" +
