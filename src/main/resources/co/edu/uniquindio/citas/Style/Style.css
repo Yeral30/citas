@@ -21,3 +21,14 @@
     -fx-scale-x: 1.1; /* Agranda el botón horizontalmente */
     -fx-scale-y: 1.1; /* Agranda el botón verticalmente */
 }
+.date-picker-popup > .popup-content {
+    -fx-padding: 10px; /* Ajusta el espaciado dentro del calendario */
+}
+
+.date-picker-popup > .popup-content > .month-year-pane {
+    -fx-spacing: 10px; /* Ajusta el espaciado entre los elementos del encabezado (mes y año) */
+}
+
+.date-picker-popup > .popup-content > .calendar-grid {
+    -fx-background-color: white; /* Cambia el color de fondo del calendario */
+}

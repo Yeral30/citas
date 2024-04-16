@@ -23,14 +23,14 @@ public class Controller {
     }
 
     // Asigna un número de cita teniendo un paciente
-    public String asignarNumeroCita(TipoCita tipoCita, String nombrePaciente, String idPaciente) {
-        Paciente paciente = new Paciente(nombrePaciente, idPaciente); // Crea un paciente con datos proporcionados.
-        return citas.asignarNumeroCita(tipoCita, paciente); // Llama al método correcto con ambos parámetros.
+    public Cita asignarCita(TipoCita tipoCita, String nombrePaciente, String idPaciente, LocalDateTime fecha) {
+
+        return citas.CreasCita(tipoCita,idPaciente,nombrePaciente,fecha); // Llama al método correcto con ambos parámetros.
     }
 
     // Obtiene la fecha asignada a una cita
     public LocalDateTime asignarFechaCita(TipoCita tipoCita) {
-        return citas.asignarFechaCita(tipoCita);
+        return citas.asignarUrgencias(tipoCita);
     }
 
 

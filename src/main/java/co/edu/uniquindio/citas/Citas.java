@@ -4,11 +4,8 @@ import co.edu.uniquindio.citas.model.Cita;
 import co.edu.uniquindio.citas.model.Paciente;
 import co.edu.uniquindio.citas.model.enumeraciones.Prioridad;
 import co.edu.uniquindio.citas.model.enumeraciones.TipoCita;
-import javafx.fxml.Initializable;
 
-import java.net.URL;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Citas {
@@ -23,6 +20,9 @@ public class Citas {
     private LocalDateTime fechaAsignacionUrgencias = LocalDateTime.now();
     ;
     private ArrayList<String> cedulas = new ArrayList<>();
+
+    private ArrayList<LocalDateTime>fechas= new ArrayList<>();
+
 
 
 
@@ -66,21 +66,17 @@ public class Citas {
      * @param tipoCita
      * @return
      */
-    public String asignarNumeroCita(TipoCita tipoCita, Paciente paciente) {
+    private String asignarNumeroCita(TipoCita tipoCita) {
         String numeroCita = calcularNumeroCita(tipoCita);
-        LocalDateTime fechaAsignacion = asignarFechaCita(tipoCita);
-
-        // Crear la nueva cita con todos los detalles necesarios
-        Cita nuevaCita = new Cita(paciente, tipoCita, numeroCita, fechaAsignacion);
-        colaDeCitas.add(nuevaCita);
-
-        Iterator <Cita> iterator= colaDeCitas.iterator();
-        while (iterator.hasNext()){
-            Cita c= iterator.next();
-            System.out.println(c.toString());
-        }
-
         return numeroCita;
+    }
+
+
+
+    public Cita CreasCita(TipoCita tipoCita,String id, String nombre, LocalDateTime fecha){
+        Cita cita= new Cita(new Paciente(nombre,id),tipoCita,asignarNumeroCita(tipoCita),fecha);
+        colaDeCitas.add(cita);
+        return  cita;
     }
 
     private String calcularNumeroCita(TipoCita tipoCita) {
@@ -96,7 +92,7 @@ public class Citas {
     }
 
     //asignacion fecha
-    public LocalDateTime asignarFechaCita(TipoCita tipoCita) {
+    public LocalDateTime asignarUrgencias(TipoCita tipoCita) {
         if (tipoCita.getPrioridad().compareTo(Prioridad.ALTA) == 0) {
             fechaAsignacionUrgencias = incrementarHora(fechaAsignacionUrgencias, 30);
             return fechaAsignacionUrgencias;
@@ -107,6 +103,11 @@ public class Citas {
             fechaAsignacionGeneral = incrementarHora(fechaAsignacionGeneral, 10);
             return fechaAsignacionGeneral;
         }
+    }
+
+    public void obtenerFecha(LocalDateTime asignacion){
+        fechas.add(asignacion);
+
     }
 
     private LocalDateTime incrementarHora(LocalDateTime fecha, int minutos) {

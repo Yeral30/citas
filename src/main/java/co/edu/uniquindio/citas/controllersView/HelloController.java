@@ -14,15 +14,22 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.util.Callback;
 
 import javax.swing.*;
 import java.net.URL;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class HelloController implements Initializable {
-
+    @FXML
+    private ComboBox<String> boxHoras;
     @FXML
     private ChoiceBox<TipoCita> boxTipoCita;
 
@@ -106,6 +113,9 @@ public class HelloController implements Initializable {
 
 
     private LocalDateTime fechaAsignacion;
+    private List<LocalDate> fechasDisponibles;
+    private List<String> horasDisponibles;
+
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy 'a las' HH:mm:ss");
 
@@ -157,6 +167,9 @@ public class HelloController implements Initializable {
         if (tabPane.getTabs().contains(tapSolicitarCita)) {
             tabPane.getTabs().remove(tapSolicitarCita);
         }
+        if (tabPane.getTabs().contains(tapCalendario)) {
+            tabPane.getTabs().remove(tapCalendario);
+        }
 
         // Verificar si paneAux no es nulo y si no está ya presente en panePaderSolicitarCita
         if (paneDatos != null && !panePaderSolicitarCita.getChildren().contains(paneDatos)) {
@@ -193,32 +206,72 @@ public class HelloController implements Initializable {
 
     }
 
+    private LocalDateTime actualizarDateTime(DatePicker datePicker, ComboBox<String> comboBox) {
+        LocalDate fechaSeleccionada = datePicker.getValue();
+        String horaSeleccionada = comboBox.getValue();
+        if (fechaSeleccionada != null && horaSeleccionada != null) {
+            // Convertir la hora seleccionada a LocalTime
+            LocalTime hora = LocalTime.parse(horaSeleccionada);
+
+            // Crear LocalDateTime combinando la fecha y la hora
+            LocalDateTime dateTime = fechaSeleccionada.atTime(hora);
+            return dateTime;
+        }
+        return null;
+    }
+
+
     @FXML
     void validarA(ActionEvent event) {
-        boolean encontroCedula = false;
-        if (validarCamposSolicitarCampos()) { // Asegúrate de que este método está correctamente definido para validar campos
-            String cedula = txtIdA.getText();
-            String nombre = txtNombreA.getText();
-            TipoCita tipoCita = boxTipoCita.getValue(); // Asegúrate de que boxTipoCita está correctamente inicializado
+        if (validarCamposSolicitarCampos()) {
 
-            if (controller.verificarSiEsAfiliado(cedula)) {
-                // Construye el paciente y la cita directamente en el controlador
-                String numCita = controller.asignarNumeroCita(tipoCita, nombre, cedula);  // Usando el nuevo método corregido
-                LocalDateTime fechaAsignacion = controller.asignarFechaCita(tipoCita);  // Usando el nuevo método corregido
-
-                // reOrganizarInterfazSolicitarCita puede actualizarse para manejar el display de la información
-                reOrganizarInterfazSolicitarCita(cedula, numCita, fechaAsignacion);
-                encontroCedula = true;
-            } else {
-                mostrarMensaje(Alert.AlertType.WARNING, "La cédula no ha sido encontrada", """
-                        Su cédula no ha sido encontrada,
-                        verifique su cédula o
-                        puede que no esté afiliado.
-                        Comuníquese con nuestra
-                        área de afiliación de Nuevo EPS
-                        a través del número (10080003).""");
-            }
+            dirigirCalendario();
         }
+        else {
+            mostrarMensaje(Alert.AlertType.WARNING, "La cédula no ha sido encontrada", """
+                    Su cédula no ha sido encontrada,
+                    verifique su cédula o
+                    puede que no esté afiliado.
+                    Comuníquese con nuestra
+                    área de afiliación de Nuevo EPS
+                    a través del número (10080003).""");
+        }
+
+    }
+
+
+
+    @FXML
+    void aceptarCalendario(ActionEvent event) {
+        boolean encontroCedula = false;
+        String cedula = txtIdA.getText();
+        String nombre = txtNombreA.getText();
+        TipoCita tipoCita = boxTipoCita.getValue();
+        LocalDate fechaSeleccionada = dateCalendario.getValue();// Asegúrate de que boxTipoCita está correctamente inicializado
+        LocalDateTime fecha = actualizarDateTime(dateCalendario, boxHoras);
+        String horaSeleccionada = boxHoras.getValue();
+        if (controller.verificarSiEsAfiliado(cedula)) {
+            LocalDateTime fecha1 = fechaSeleccionada.atTime(Integer.parseInt(horaSeleccionada.substring(0, 2)), 0);
+
+            // Construye el paciente y la cita directamente en el controlador
+            Cita cita = controller.asignarCita(tipoCita, nombre, cedula, fecha);
+            // reOrganizarInterfazSolicitarCita puede actualizarse para manejar el display de la información
+            reOrganizarInterfazSolicitarCita(cedula, cita.getNumeroCita(), cita.getFechaCita());
+            encontroCedula = true;
+            actualizarListasDespuesDeSeleccion(fechaSeleccionada, horaSeleccionada);
+
+            if (!tabPane.getTabs().contains(tapSolicitarCita)) {
+                tabPane.getTabs().add(tapSolicitarCita);
+            }
+            TabPane tabPane = tapSolicitarCita.getTabPane();
+
+            //sirve para pasar al tap solicitarCita
+            if (tabPane != null) {
+                tabPane.getSelectionModel().select(tapSolicitarCita);
+            }
+
+        }
+
     }
 
 
@@ -295,8 +348,30 @@ public class HelloController implements Initializable {
         tabPane.getTabs().remove(tapSolicitarCita);
         tabPane.getTabs().remove(tapCancelarModificar);
         tabPane.getTabs().remove(tapConsultar);
+        tabPane.getTabs().remove(tapCalendario);
+        boxHoras.setValue("06:00");
+        dateCalendario.setValue(LocalDate.now());
+        //--------------------------------------
+        // Establecer una fecha inicial predeterminada
+        dateCalendario.setValue(LocalDate.now());
 
+        // Configurar el DatePicker para que muestre el calendario directamente
+        dateCalendario.setEditable(false); // Deshabilita la edición del campo de texto
 
+//----------------horas------------------------
+        inicializarFechasYHorasDisponibles();
+
+        dateCalendario.setDayCellFactory(param -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                setDisable(!fechasDisponibles.contains(item));
+            }
+        });
+
+        boxHoras.setItems(FXCollections.observableArrayList(horasDisponibles));
+
+//------------------------------------------
         originalX = btnVolver.getLayoutX();
         originalY = btnVolver.getLayoutY();
 
@@ -311,6 +386,33 @@ public class HelloController implements Initializable {
         boxTipoCitaConsultarCitas.setValue(TipoCita.MEDICO_GENERAL);
 
 
+    }
+
+    private void inicializarFechasYHorasDisponibles() {
+        fechasDisponibles = new ArrayList<>();
+        horasDisponibles = new ArrayList<>();
+        LocalDate fechaActual = LocalDate.now();
+        for (int i = 0; i < 7; i++) {
+            fechasDisponibles.add(fechaActual.plusDays(i));
+        }
+        for (int hora = 6; hora <= 18; hora++) {
+            horasDisponibles.add(String.format("%02d:00", hora));
+        }
+    }
+
+
+
+    private void actualizarListasDespuesDeSeleccion(LocalDate fechaSeleccionada, String horaSeleccionada) {
+        fechasDisponibles.remove(fechaSeleccionada);
+        horasDisponibles.remove(horaSeleccionada);
+        dateCalendario.setDayCellFactory(param -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                setDisable(!fechasDisponibles.contains(item));
+            }
+        });
+        boxHoras.setItems(FXCollections.observableArrayList(horasDisponibles));
     }
 
 
@@ -370,14 +472,14 @@ public class HelloController implements Initializable {
                 originalY = btnVolverConsultarCita.getLayoutY();
                 //se agregan los objetos de interfaz que se van a quitar
                 if (paneDatosConsultarCita != null && !panePaderConsultarCita.getChildren().contains(paneDatosConsultarCita)) {
-                    panePrincipal.getChildren().add(paneDatos);
+                    panePrincipal.getChildren().add(paneDatosConsultarCita);
                 }
                 if (btnConsultarCita != null && !panePaderConsultarCita.getChildren().contains(btnAceptarConsultarCita)) {
                     panePrincipal.getChildren().add(btnAceptarConsultarCita);
                 }
                 // se mueven los botones para una nueva interfas
-                btnConsultarCita.setLayoutX(274);
-                btnConsultarCita.setLayoutY(261);
+                btnVolverConsultarCita.setLayoutX(274);
+                btnVolverConsultarCita.setLayoutY(261);
 
                 panePaderConsultarCita.getChildren().remove(paneDatosConsultarCita);
                 panePaderConsultarCita.getChildren().remove(btnAceptarConsultarCita);
@@ -397,18 +499,30 @@ public class HelloController implements Initializable {
             }
 
 
-            JOptionPane.showMessageDialog(null, "Señ@r " + cita.getPaciente().getNombre() + " con numero de cedula " +
-                    cita.getPaciente().getIdentificacion() +
-                    " \nverificamos en el sistema que efectivamente tiene una cita \n el numero de la cita es: " + cita.getNumeroCita()
-                    + " la fecha y hora de su cita es: " + cita.getFechaCita());
         }
-        /**} else {
-         JOptionPane.showMessageDialog(null, "Debe de llenar todos los campos");
 
-         }
-         */
 
     }
+
+    @FXML
+    private Button btnAceptarCalendario;
+
+
+    @FXML
+    private Tab tapCalendario;
+
+    private void dirigirCalendario() {
+        if (!tabPane.getTabs().contains(tapCalendario)) {
+            tabPane.getTabs().add(tapCalendario);
+        }
+        TabPane tabPane = tapCalendario.getTabPane();
+
+        //sirve para pasar al tap solicitarCita
+        if (tabPane != null) {
+            tabPane.getSelectionModel().select(tapCalendario);
+        }
+    }
+
 
     @FXML
     private AnchorPane panePrincipalConsultarCita;
@@ -431,9 +545,10 @@ public class HelloController implements Initializable {
     @FXML
     void dirigirInicioDesdeConsultar(ActionEvent event) {
         // Restaurar las coordenadas originales de btnVolver
+
+
         btnVolverConsultarCita.setLayoutX(originalX);
         btnVolverConsultarCita.setLayoutY(originalY);
-
         TabPane tabPane = tapInicio.getTabPane();
 
         // Seleccionar la pestaña de inicio
@@ -460,7 +575,7 @@ public class HelloController implements Initializable {
         lblInformativoG.setText("Ingresa los siguientes datos para agendar tu turno:");
         imgRegistro.setLayoutY(cordenadasYimg);
         panePaderConsultarCita.getChildren().remove(labelMensajeG);
-        vaciarCampos();
+        limpiarCampos();
 
 
     }
@@ -505,6 +620,13 @@ public class HelloController implements Initializable {
     private TextField txtNumeroCitaCancelar;
 
     @FXML
+    private DatePicker dateCalendario;
+
+    private void limpiarCampos() {
+        txtIdConsultarCita.setText((""));
+    }
+
+    @FXML
     void aceptarCancelar(ActionEvent event) {
         TipoCita tipoCita;
         Cita cita;
@@ -515,19 +637,19 @@ public class HelloController implements Initializable {
         } else if (numeroCita.charAt(0) == 'C') {
 
             tipoCita = TipoCita.CIRUGIA_PROGRAMADA;
-    }else{
+        } else {
             tipoCita = TipoCita.MEDICO_GENERAL;
         }
-            cita =controller.obtenerCita(new Cita(new Paciente("",id),tipoCita,numeroCita,null));
-        if (cita == null){
+        cita = controller.obtenerCita(new Cita(new Paciente("", id), tipoCita, numeroCita, null));
+        if (cita == null) {
             JOptionPane.showMessageDialog(null, "Usted no tiene citas pendientes");
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "puede modificar su cita");
 
 
         }
 
-}
+    }
 
     @FXML
     void dirigirInicioDesdeCancelar(ActionEvent event) {
