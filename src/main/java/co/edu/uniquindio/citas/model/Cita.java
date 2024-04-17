@@ -22,23 +22,15 @@ public class Cita {
     private TipoCita tipoCita;
     private Prioridad prioridad;
 
-
-
-
     public Cita(Paciente paciente, TipoCita tipoCita, String numeroCita, LocalDateTime programacionCita) {
         fechaCita=programacionCita;
         this.paciente = paciente;
         this.numeroCita=numeroCita;
         this.tipoCita = tipoCita;
         this.prioridad = tipoCita.getPrioridad();
-
     }
     public Cita (Paciente paciente,TipoCita tipoCita){
         this.paciente = paciente;
         this.tipoCita = tipoCita;
     }
-
-
-
-
 }

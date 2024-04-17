@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class HelloController implements Initializable {
+public class ViewController implements Initializable {
     @FXML
     private ComboBox<String> boxHoras;
     @FXML
